@@ -7,24 +7,57 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import Instantiate
+import InstantiateStandard
+import PKHUD
 
-class PlayGameViewController: UIViewController {
+class PlayGameViewController: UIViewController, StoryboardInstantiatable {
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
+    }
+}
+
+extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 30
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = CollectionViewUtil.createCell(collectionView, identifier: CardCell.reusableIdentifier, indexPath) as! CardCell
+        cell.imageView.image = UIImage(named: "ina9")
+        return cell
     }
-    */
+}
 
+extension PlayGameViewController: UICollectionViewDelegateFlowLayout {
+    //セクションの外側余白
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+    }
+    
+    //セルサイズ
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = self.collectionView.bounds.width
+        let cellHeight = self.collectionView.bounds.height
+        return CGSize(width: (cellWidth / 5) - 10, height: (cellHeight / 6) - 10)
+    }
+    
+    //列間の余白（□□□
+    //
+    //　　　　　　□□□）
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    //行間の余白（□ ＜ー＞　□）？？
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
 }

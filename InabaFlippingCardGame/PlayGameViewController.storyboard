@@ -35,6 +35,10 @@
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="OG9-P0-8cc" id="y7I-zq-nKo"/>
+                                    <outlet property="delegate" destination="OG9-P0-8cc" id="wVi-gX-cTh"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" red="0.17105786229818262" green="0.44211206020776261" blue="0.17216297034780853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -48,6 +52,9 @@
                         <viewLayoutGuide key="safeArea" id="dMt-SW-BVe"/>
                     </view>
                     <navigationItem key="navigationItem" title="ゲーム画面" id="Phu-2g-wRT"/>
+                    <connections>
+                        <outlet property="collectionView" destination="m6l-rB-1WI" id="tql-rn-qSQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHp-mV-D5K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
