@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		6784A7DC2413E882004ED752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DB2413E882004ED752 /* AppDelegate.swift */; };
 		6784A7DE2413E882004ED752 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DD2413E882004ED752 /* SceneDelegate.swift */; };
-		6784A7E02413E882004ED752 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DF2413E882004ED752 /* ViewController.swift */; };
+		6784A7E02413E882004ED752 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DF2413E882004ED752 /* MainViewController.swift */; };
 		6784A7E32413E882004ED752 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6784A7E12413E882004ED752 /* Main.storyboard */; };
 		6784A7E52413E884004ED752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6784A7E42413E884004ED752 /* Assets.xcassets */; };
 		6784A7E82413E884004ED752 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6784A7E62413E884004ED752 /* LaunchScreen.storyboard */; };
 		6784A7F32413E884004ED752 /* InabaFlippingCardGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7F22413E884004ED752 /* InabaFlippingCardGameTests.swift */; };
 		6784A7FE2413E884004ED752 /* InabaFlippingCardGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7FD2413E884004ED752 /* InabaFlippingCardGameUITests.swift */; };
+		6784A80C2413ED4C004ED752 /* PlayGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A80B2413ED4C004ED752 /* PlayGameViewController.swift */; };
+		6784A80E2413ED5E004ED752 /* PlayGameViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6784A80D2413ED5E004ED752 /* PlayGameViewController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +40,7 @@
 		6784A7D82413E882004ED752 /* InabaFlippingCardGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InabaFlippingCardGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6784A7DB2413E882004ED752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6784A7DD2413E882004ED752 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6784A7DF2413E882004ED752 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6784A7DF2413E882004ED752 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		6784A7E22413E882004ED752 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6784A7E42413E884004ED752 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6784A7E72413E884004ED752 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,8 @@
 		6784A7F92413E884004ED752 /* InabaFlippingCardGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InabaFlippingCardGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6784A7FD2413E884004ED752 /* InabaFlippingCardGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InabaFlippingCardGameUITests.swift; sourceTree = "<group>"; };
 		6784A7FF2413E884004ED752 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6784A80B2413ED4C004ED752 /* PlayGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayGameViewController.swift; sourceTree = "<group>"; };
+		6784A80D2413ED5E004ED752 /* PlayGameViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlayGameViewController.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +105,10 @@
 			children = (
 				6784A7DB2413E882004ED752 /* AppDelegate.swift */,
 				6784A7DD2413E882004ED752 /* SceneDelegate.swift */,
-				6784A7DF2413E882004ED752 /* ViewController.swift */,
+				6784A7DF2413E882004ED752 /* MainViewController.swift */,
 				6784A7E12413E882004ED752 /* Main.storyboard */,
+				6784A80B2413ED4C004ED752 /* PlayGameViewController.swift */,
+				6784A80D2413ED5E004ED752 /* PlayGameViewController.storyboard */,
 				6784A7E42413E884004ED752 /* Assets.xcassets */,
 				6784A7E62413E884004ED752 /* LaunchScreen.storyboard */,
 				6784A7E92413E884004ED752 /* Info.plist */,
@@ -233,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6784A7E82413E884004ED752 /* LaunchScreen.storyboard in Resources */,
+				6784A80E2413ED5E004ED752 /* PlayGameViewController.storyboard in Resources */,
 				6784A7E52413E884004ED752 /* Assets.xcassets in Resources */,
 				6784A7E32413E882004ED752 /* Main.storyboard in Resources */,
 			);
@@ -259,8 +266,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6784A7E02413E882004ED752 /* ViewController.swift in Sources */,
+				6784A7E02413E882004ED752 /* MainViewController.swift in Sources */,
 				6784A7DC2413E882004ED752 /* AppDelegate.swift in Sources */,
+				6784A80C2413ED4C004ED752 /* PlayGameViewController.swift in Sources */,
 				6784A7DE2413E882004ED752 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
