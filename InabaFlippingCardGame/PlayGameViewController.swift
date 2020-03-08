@@ -31,7 +31,22 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionViewUtil.createCell(collectionView, identifier: CardCell.reusableIdentifier, indexPath) as! CardCell
-        cell.imageView.image = UIImage(named: "ina9")
+        switch indexPath.row {
+        case 0...4:
+            cell.imageView.image = UIImage(named: "CardBackImageRed")
+        case 5...9:
+            cell.imageView.image = UIImage(named: "CardBackImageBlue")
+        case 10...14:
+            cell.imageView.image = UIImage(named: "CardBackImageRed")
+        case 15...19:
+            cell.imageView.image = UIImage(named: "CardBackImageBlue")
+        case 20...24:
+            cell.imageView.image = UIImage(named: "CardBackImageRed")
+        case 25...29:
+            cell.imageView.image = UIImage(named: "CardBackImageBlue")
+        default:
+            break
+        }
         return cell
     }
 }

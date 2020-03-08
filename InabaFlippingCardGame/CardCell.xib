@@ -17,10 +17,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yRv-93-L2g" userLabel="BaseView">
-                        <rect key="frame" x="3" y="3" width="170" height="231"/>
+                        <rect key="frame" x="0.0" y="0.0" width="176" height="237"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xIY-Gi-lQe">
-                                <rect key="frame" x="0.0" y="0.0" width="170" height="231"/>
+                                <rect key="frame" x="0.0" y="0.0" width="176" height="237"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -34,10 +34,10 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="yRv-93-L2g" secondAttribute="bottom" constant="3" id="TtE-vx-LSJ"/>
-                <constraint firstAttribute="trailing" secondItem="yRv-93-L2g" secondAttribute="trailing" constant="3" id="YBm-qI-YAB"/>
-                <constraint firstItem="yRv-93-L2g" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="3" id="iZ2-yw-6Co"/>
-                <constraint firstItem="yRv-93-L2g" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="3" id="zEc-ka-oSf"/>
+                <constraint firstAttribute="bottom" secondItem="yRv-93-L2g" secondAttribute="bottom" id="TtE-vx-LSJ"/>
+                <constraint firstAttribute="trailing" secondItem="yRv-93-L2g" secondAttribute="trailing" id="YBm-qI-YAB"/>
+                <constraint firstItem="yRv-93-L2g" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="iZ2-yw-6Co"/>
+                <constraint firstItem="yRv-93-L2g" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="zEc-ka-oSf"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="176" height="237"/>
