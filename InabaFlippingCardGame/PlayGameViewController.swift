@@ -17,8 +17,14 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var isOpenedBool: [Bool] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for _ in 0..<30 {
+            self.isOpenedBool += [false]
+        }
 
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
     }
@@ -31,28 +37,29 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionViewUtil.createCell(collectionView, identifier: CardCell.reusableIdentifier, indexPath) as! CardCell
-//        switch indexPath.row {
-//        case 0...4:
-//            cell.imageView.image = UIImage(named: "CardBackImageRed")
-//        case 5...9:
-//            cell.imageView.image = UIImage(named: "CardBackImageBlue")
-//        case 10...14:
-//            cell.imageView.image = UIImage(named: "CardBackImageRed")
-//        case 15...19:
-//            cell.imageView.image = UIImage(named: "CardBackImageBlue")
-//        case 20...24:
-//            cell.imageView.image = UIImage(named: "CardBackImageRed")
-//        case 25...29:
-//            cell.imageView.image = UIImage(named: "CardBackImageBlue")
-//        default:
-//            break
-//        }
         if indexPath.row % 2 == 0 {
-            cell.imageView.image = UIImage(named: "CardBackImageRed")
+            if self.isOpenedBool[indexPath.row] {
+                cell.imageView.image = UIImage(named: "ina9")
+            }else {
+                cell.imageView.image = UIImage(named: "CardBackImageRed")
+            }
         }else {
-            cell.imageView.image = UIImage(named: "CardBackImageBlue")
+            if self.isOpenedBool[indexPath.row] {
+                cell.imageView.image = UIImage(named: "ina9")
+            }else {
+                cell.imageView.image = UIImage(named: "CardBackImageBlue")
+            }
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if isOpenedBool[indexPath.row] {
+            self.isOpenedBool[indexPath.row] = false
+        }else {
+            self.isOpenedBool[indexPath.row] = true
+        }
+        collectionView.reloadData()
     }
 }
 
