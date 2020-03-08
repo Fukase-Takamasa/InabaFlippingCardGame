@@ -62,26 +62,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1402.8985507246377" y="31.473214285714285"/>
+            <point key="canvasLocation" x="2313.04347826087" y="31.473214285714285"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="Mid-qF-NRT">
+        <!--Navigation Controller-->
+        <scene sceneID="lLa-Uu-KAZ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Igv-65-PYx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="K6C-vu-8VS"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7yC-JY-AvE" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ufW-gy-En4">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="diN-Hh-wOD">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="bFG-8u-KVI"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="HDV-rW-PIg"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1I0-dA-s3V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YBR-Z2-OSD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="492.75362318840581" y="31.473214285714285"/>
+            <point key="canvasLocation" x="1402.8985507246377" y="31.473214285714285"/>
         </scene>
     </scenes>
 </document>

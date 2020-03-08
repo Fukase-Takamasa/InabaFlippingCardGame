@@ -26,7 +26,9 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
         //other
         startButton.rx.tap.subscribe{ _ in
             let vc = PlayGameViewController.instantiate()
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.present(vc, animated: true, completion: nil)
+//            self.navigationController?.pushViewController(vc, animated: true)
+            
         }.disposed(by: dispopseBag)
     }
 
