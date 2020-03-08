@@ -17,16 +17,33 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var isOpenedBool: [Bool] = []
+    var inabaCards: [(UIImage, Bool, Bool)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for _ in 0..<30 {
-            self.isOpenedBool += [false]
-        }
 
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
+    }
+    
+    func setInabaCard() {
+        inabaCards = [
+            (UIImage(named: "ina1")!, false, false),
+            (UIImage(named: "ina2")!, false, false),
+            (UIImage(named: "ina3")!, false, false),
+            (UIImage(named: "ina4")!, false, false),
+            (UIImage(named: "ina5")!, false, false),
+            (UIImage(named: "ina6")!, false, false),
+            (UIImage(named: "ina7")!, false, false),
+            (UIImage(named: "ina8")!, false, false),
+            (UIImage(named: "ina9")!, false, false),
+            (UIImage(named: "ina10")!, false, false),
+            (UIImage(named: "ina11")!, false, false),
+            (UIImage(named: "ina12")!, false, false),
+            (UIImage(named: "ina13")!, false, false),
+            (UIImage(named: "ina14")!, false, false),
+            (UIImage(named: "ina15")!, false, false)
+        ]
     }
 }
 
@@ -45,7 +62,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
             }
         }else {
             if self.isOpenedBool[indexPath.row] {
-                cell.imageView.image = UIImage(named: "ina9")
+                cell.imageView.image = UIImage(named: "ina7")
             }else {
                 cell.imageView.image = UIImage(named: "CardBackImageBlue")
             }
@@ -72,7 +89,7 @@ extension PlayGameViewController: UICollectionViewDelegateFlowLayout {
     //セルサイズ
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = (self.collectionView.bounds.width / 6) - (1.4 * (6 - 1))
-        let cellHeight = (self.collectionView.bounds.height / 6) - (1 * (5 - 1))
+        let cellHeight = (self.collectionView.bounds.height / 5) - (2 * (5 - 1))
         return CGSize(width: cellWidth, height: cellHeight)
     }
     

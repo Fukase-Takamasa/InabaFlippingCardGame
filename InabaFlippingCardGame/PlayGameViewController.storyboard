@@ -13,11 +13,11 @@
             <objects>
                 <viewController id="OG9-P0-8cc" customClass="PlayGameViewController" customModule="InabaFlippingCardGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FXh-Qj-yo2">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m6l-rB-1WI">
-                                <rect key="frame" x="20" y="224" width="374" height="502"/>
+                                <rect key="frame" x="20" y="185" width="374" height="404"/>
                                 <color key="backgroundColor" red="0.1710578623" green="0.44211206019999999" blue="0.1721629703" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="QMA-6J-hEY">
                                     <size key="itemSize" width="50" height="50"/>
@@ -47,7 +47,7 @@
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="centerX" secondItem="FXh-Qj-yo2" secondAttribute="centerX" id="C6e-vu-LWt"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="centerY" secondItem="dMt-SW-BVe" secondAttribute="centerY" id="lrG-G4-8j6"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="width" secondItem="FXh-Qj-yo2" secondAttribute="width" multiplier="0.903382" id="qOA-pb-776"/>
-                            <constraint firstItem="m6l-rB-1WI" firstAttribute="height" secondItem="FXh-Qj-yo2" secondAttribute="height" multiplier="0.56" id="x4Z-t2-fWU"/>
+                            <constraint firstItem="m6l-rB-1WI" firstAttribute="height" secondItem="FXh-Qj-yo2" secondAttribute="height" multiplier="0.5" id="x4Z-t2-fWU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dMt-SW-BVe"/>
                     </view>
@@ -65,7 +65,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fss-zM-ack" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bWQ-m5-Jc0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="bWQ-m5-Jc0">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

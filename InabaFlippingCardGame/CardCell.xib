@@ -19,22 +19,27 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yRv-93-L2g" userLabel="BaseView">
                         <rect key="frame" x="0.0" y="0.0" width="176" height="237"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xIY-Gi-lQe">
-                                <rect key="frame" x="0.0" y="0.0" width="176" height="237"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xIY-Gi-lQe">
+                                <rect key="frame" x="2" y="0.0" width="172" height="237"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="15"/>
+                                        <real key="value" value="4"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="xIY-Gi-lQe" firstAttribute="leading" secondItem="yRv-93-L2g" secondAttribute="leading" id="M07-5L-7ww"/>
+                            <constraint firstItem="xIY-Gi-lQe" firstAttribute="leading" secondItem="yRv-93-L2g" secondAttribute="leading" constant="2" id="M07-5L-7ww"/>
                             <constraint firstItem="xIY-Gi-lQe" firstAttribute="top" secondItem="yRv-93-L2g" secondAttribute="top" id="qOC-k3-sdC"/>
-                            <constraint firstAttribute="trailing" secondItem="xIY-Gi-lQe" secondAttribute="trailing" id="sAq-zh-6hB"/>
+                            <constraint firstAttribute="trailing" secondItem="xIY-Gi-lQe" secondAttribute="trailing" constant="2" id="sAq-zh-6hB"/>
                             <constraint firstAttribute="bottom" secondItem="xIY-Gi-lQe" secondAttribute="bottom" id="zET-Zo-8t1"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
             </view>

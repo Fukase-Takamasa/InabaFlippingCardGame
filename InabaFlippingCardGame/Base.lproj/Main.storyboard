@@ -16,24 +16,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wC6-m3-LfU">
-                                <rect key="frame" x="135" y="446" width="144" height="96"/>
+                                <rect key="frame" x="135" y="400" width="144" height="96"/>
                                 <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="144" id="1H0-oO-3h0"/>
+                                    <constraint firstAttribute="height" constant="96" id="7DF-o3-uUS"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="開始">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="ニックネーム（最大８文字）" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30O-e0-ZHj">
-                                <rect key="frame" x="87" y="340" width="241" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ニックネーム（最大８文字）" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30O-e0-ZHj">
+                                <rect key="frame" x="86.5" y="325" width="241" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="241" id="5mM-5j-thU"/>
+                                    <constraint firstAttribute="height" constant="21" id="LwP-5n-A7x"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RTc-Wy-q7g">
-                                <rect key="frame" x="87" y="369" width="241" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RTc-Wy-q7g">
+                                <rect key="frame" x="86.5" y="351" width="241" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="ZOK-Rz-R2z"/>
+                                    <constraint firstAttribute="height" constant="34" id="Esx-GQ-Zbv"/>
+                                    <constraint firstAttribute="width" constant="241" id="zTW-3O-QGR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -41,16 +50,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="30O-e0-ZHj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1Ug-Wp-YnY"/>
-                            <constraint firstItem="RTc-Wy-q7g" firstAttribute="top" secondItem="30O-e0-ZHj" secondAttribute="bottom" constant="8" id="BRW-3f-Tbq"/>
-                            <constraint firstItem="30O-e0-ZHj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="LUX-gE-7jK"/>
-                            <constraint firstItem="30O-e0-ZHj" firstAttribute="trailing" secondItem="RTc-Wy-q7g" secondAttribute="trailing" id="May-hZ-flm"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wC6-m3-LfU" secondAttribute="bottom" constant="320" id="XTr-Aj-zbH"/>
-                            <constraint firstItem="30O-e0-ZHj" firstAttribute="leading" secondItem="RTc-Wy-q7g" secondAttribute="leading" id="gOa-aa-ENK"/>
-                            <constraint firstItem="wC6-m3-LfU" firstAttribute="top" secondItem="RTc-Wy-q7g" secondAttribute="bottom" constant="43" id="nhT-Tj-FFu"/>
-                            <constraint firstItem="RTc-Wy-q7g" firstAttribute="centerX" secondItem="wC6-m3-LfU" secondAttribute="centerX" id="wOW-VV-3w5"/>
-                            <constraint firstItem="wC6-m3-LfU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="135" id="wrg-vz-D91"/>
-                            <constraint firstItem="30O-e0-ZHj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="252" id="zro-dk-is5"/>
+                            <constraint firstItem="RTc-Wy-q7g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2DE-Jz-Dnu"/>
+                            <constraint firstItem="wC6-m3-LfU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LXo-qi-88C"/>
+                            <constraint firstItem="wC6-m3-LfU" firstAttribute="top" secondItem="RTc-Wy-q7g" secondAttribute="bottom" constant="15" id="RLf-xD-x7a"/>
+                            <constraint firstItem="wC6-m3-LfU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YJb-CL-9cN"/>
+                            <constraint firstItem="RTc-Wy-q7g" firstAttribute="top" secondItem="30O-e0-ZHj" secondAttribute="bottom" constant="5" id="fbi-3G-mdN"/>
+                            <constraint firstItem="30O-e0-ZHj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zIS-wl-bk7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
