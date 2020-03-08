@@ -55,6 +55,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="タイトル画面" id="ikD-rE-KTH"/>
+                    <connections>
+                        <outlet property="startButton" destination="wC6-m3-LfU" id="vCF-g6-VCF"/>
+                        <outlet property="textField" destination="RTc-Wy-q7g" id="GJF-ZX-JDF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

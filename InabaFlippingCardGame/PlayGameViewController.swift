@@ -44,9 +44,9 @@ extension PlayGameViewController: UICollectionViewDelegateFlowLayout {
     
     //セルサイズ
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = self.collectionView.bounds.width
-        let cellHeight = self.collectionView.bounds.height
-        return CGSize(width: (cellWidth / 5) - 10, height: (cellHeight / 6) - 10)
+        let cellWidth = (self.collectionView.bounds.width / 5) - 10
+        let cellHeight = (self.collectionView.bounds.height / 6) - 10
+        return CGSize(width: cellWidth, height: cellHeight)
     }
     
     //列間の余白（□□□
