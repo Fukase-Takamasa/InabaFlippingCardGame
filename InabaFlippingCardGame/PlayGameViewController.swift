@@ -92,7 +92,6 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 }
             }
         }
-        
         return cell
     }
     
@@ -109,42 +108,31 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     //マッチした！両方のisOpenedをtrueにする
                     inabaCards[flippedCard[0]].2 = true
                     inabaCards[flippedCard[1]].2 = true
-                    flipCount = 1
+                    self.flipCount = 1
+                    self.flippedCard = [0,0]
                 }else {
                     print("マッチしませんでした")
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
-                    //マッチしてないので、両方閉じる
-                    inabaCards[flippedCard[0]].1 = false
-                    inabaCards[flippedCard[1]].1 = false
-                    flippedCard = [0,0]
-                    flipCount = 1
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.00) {
+                        //マッチしてないので、両方閉じる
+                        self.inabaCards[self.flippedCard[0]].1 = false
+                        self.inabaCards[self.flippedCard[1]].1 = false
+                        self.flipCount = 1
+                        self.flippedCard = [0,0]
+                        collectionView.reloadData()
+                    }
                 }
+                
             }else {
                 self.flipCount += 1
                 self.flippedCard[0] = indexPath.row
             }
         }
         
+        
         collectionView.reloadData()
 
-//        let matchPair = inabaCards.filter{ $0.3 == (inabaCards[indexPath.row].3)}
-//        print("matchPair: \(matchPair)")
-//        let pieceOfPairFirst = matchPair[0].1
-//        let pieceOfPairSecond = matchPair[1].1
-//        if pieceOfPairFirst == pieceOfPairSecond {
-//            //ペアーが揃った場合の処理　２枚とも開けたままにする
-//
-//        }else {
-//            //ペアーが揃っていない場合の処理　２枚とも閉じる
-//
-//        }
-        
-        
-//        else {
-//            self.inabaCards[indexPath.row].1 = false
-//        }
-        
     }
 }
 
