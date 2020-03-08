@@ -25,6 +25,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setInabaCard()
+        inabaCards.shuffle()
 
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
     }
