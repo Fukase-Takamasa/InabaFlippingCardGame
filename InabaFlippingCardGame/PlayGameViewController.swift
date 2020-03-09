@@ -18,9 +18,10 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     @IBOutlet weak var collectionView: UICollectionView!
     
     //（画像名、isOpenedのBool値、isMatchedのBool値）
-    var inabaCards: [(UIImage, Bool, Bool, Int)] = []
+    var inabaCards: [(UIImage, Bool, Bool)] = []
     var flipCount = 1
     var flippedCard = [0, 0]
+    var isUserTouchEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,43 +33,43 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     
     func setInabaCard() {
         inabaCards = [
-            (UIImage(named: "ina1")!, false, false, 1),
-            (UIImage(named: "ina2")!, false, false, 2),
-            (UIImage(named: "ina3")!, false, false, 3),
-            (UIImage(named: "ina4")!, false, false, 4),
-            (UIImage(named: "ina5")!, false, false, 5),
-            (UIImage(named: "ina6")!, false, false, 6),
-            (UIImage(named: "ina7")!, false, false, 7),
-            (UIImage(named: "ina8")!, false, false, 8),
-            (UIImage(named: "ina9")!, false, false, 9),
-            (UIImage(named: "ina10")!, false, false, 10),
-            (UIImage(named: "ina11")!, false, false, 11),
-            (UIImage(named: "ina12")!, false, false, 12),
-            (UIImage(named: "ina13")!, false, false, 13),
-            (UIImage(named: "ina14")!, false, false, 14),
-            (UIImage(named: "ina15")!, false, false, 15),
-            (UIImage(named: "ina1")!, false, false, 1),
-            (UIImage(named: "ina2")!, false, false, 2),
-            (UIImage(named: "ina3")!, false, false, 3),
-            (UIImage(named: "ina4")!, false, false, 4),
-            (UIImage(named: "ina5")!, false, false, 5),
-            (UIImage(named: "ina6")!, false, false, 6),
-            (UIImage(named: "ina7")!, false, false, 7),
-            (UIImage(named: "ina8")!, false, false, 8),
-            (UIImage(named: "ina9")!, false, false, 9),
-            (UIImage(named: "ina10")!, false, false, 10),
-            (UIImage(named: "ina11")!, false, false, 11),
-            (UIImage(named: "ina12")!, false, false, 12),
-            (UIImage(named: "ina13")!, false, false, 13),
-            (UIImage(named: "ina14")!, false, false, 14),
-            (UIImage(named: "ina15")!, false, false, 15),
+            (UIImage(named: "ina1")!, false, false),
+            (UIImage(named: "ina2")!, false, false),
+            (UIImage(named: "ina3")!, false, false),
+            (UIImage(named: "ina4")!, false, false),
+            (UIImage(named: "ina5")!, false, false),
+            (UIImage(named: "ina6")!, false, false),
+            (UIImage(named: "ina7")!, false, false),
+            (UIImage(named: "ina8")!, false, false),
+            (UIImage(named: "ina9")!, false, false),
+            (UIImage(named: "ina10")!, false, false),
+            (UIImage(named: "ina11")!, false, false),
+            (UIImage(named: "ina12")!, false, false),
+            (UIImage(named: "ina13")!, false, false),
+            (UIImage(named: "ina14")!, false, false),
+            (UIImage(named: "ina15")!, false, false),
+            (UIImage(named: "ina1")!, false, false),
+            (UIImage(named: "ina2")!, false, false),
+            (UIImage(named: "ina3")!, false, false),
+            (UIImage(named: "ina4")!, false, false),
+            (UIImage(named: "ina5")!, false, false),
+            (UIImage(named: "ina6")!, false, false),
+            (UIImage(named: "ina7")!, false, false),
+            (UIImage(named: "ina8")!, false, false),
+            (UIImage(named: "ina9")!, false, false),
+            (UIImage(named: "ina10")!, false, false),
+            (UIImage(named: "ina11")!, false, false),
+            (UIImage(named: "ina12")!, false, false),
+            (UIImage(named: "ina13")!, false, false),
+            (UIImage(named: "ina14")!, false, false),
+            (UIImage(named: "ina15")!, false, false)
         ]
     }
 }
 
 extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return inabaCards.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -102,7 +103,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
             if self.flipCount == 2 {
                 self.flippedCard[1] = indexPath.row
                 //フリップ２回目　２枚がマッチしてるかジャッジ
-                if (inabaCards[flippedCard[0]].3) == (inabaCards[flippedCard[1]].3) {
+                if (inabaCards[flippedCard[0]].0) == (inabaCards[flippedCard[1]].0) {
                     print("マッチした！")
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
@@ -115,25 +116,23 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     print("マッチしませんでした")
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.00) {
+                    collectionView.isUserInteractionEnabled = false
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                         //マッチしてないので、両方閉じる
                         self.inabaCards[self.flippedCard[0]].1 = false
                         self.inabaCards[self.flippedCard[1]].1 = false
                         self.flipCount = 1
                         self.flippedCard = [0,0]
+                        collectionView.isUserInteractionEnabled = true
                         collectionView.reloadData()
                     }
                 }
-                
             }else {
                 self.flipCount += 1
                 self.flippedCard[0] = indexPath.row
             }
         }
-        
-        
         collectionView.reloadData()
-
     }
 }
 
