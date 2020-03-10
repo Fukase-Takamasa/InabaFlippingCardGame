@@ -29,36 +29,29 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     //（画像名、isOpenedのBool値、isMatchedのBool値）
 //    var inabaCards: [(UIImage, Bool, Bool)] = []
     var newInabaCards: [CardData] = []
-    var messageListener: ListenerRegistration?
+    var dataBaseListener: ListenerRegistration?
     var flipCount = 1
     var flippedCard = [0, 0]
     var isUserTouchEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        defaultStore = Firestore.firestore()
-        defaultStore.collection("currentGameTableData").addSnapshotListener { (snapShot, error) in
-            guard let value = snapShot else {
-                print("snapShot is nil")
-                return
-            }
-            value.documentChanges.forEach { diff in
-                guard let dic = diff.document.data() as? [String: String] else {
-                    print("空or代入失敗")
-                    print("diff.document.data()の中身: \(diff.document.data())")
-                    return
-                }
-                
-                
-                
-            }
-        }
         
+        CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
+        
+        self.dataBaseListener = Firestore.firestore().collection("currentGameTableData").addSnapshotListener({ (snapShot, error) in
+            if let snapShot = snapShot {
+                self.newInabaCards = snapShot.documents.map{ data -> CardData in
+                    let data = data.data()
+                    return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
+                }
+                self.collectionView.reloadData()
+            }
+        })
         
 //        setInabaCard()
 //        inabaCards.shuffle()
 
-        CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
     }
     
 //    func setInabaCard() {
