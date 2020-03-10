@@ -12,59 +12,89 @@ import RxCocoa
 import Instantiate
 import InstantiateStandard
 import PKHUD
+import Firebase
 
 class PlayGameViewController: UIViewController, StoryboardInstantiatable {
+    
+    struct CardData {
+        var imageName: String
+        var isOpened: Bool
+        var isMatched: Bool
+    }
+    
+    var defaultStore: Firestore!
 
     @IBOutlet weak var collectionView: UICollectionView!
     
     //（画像名、isOpenedのBool値、isMatchedのBool値）
-    var inabaCards: [(UIImage, Bool, Bool)] = []
+//    var inabaCards: [(UIImage, Bool, Bool)] = []
+    var newInabaCards: [CardData] = []
+    var messageListener: ListenerRegistration?
     var flipCount = 1
     var flippedCard = [0, 0]
     var isUserTouchEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setInabaCard()
-        inabaCards.shuffle()
+        defaultStore = Firestore.firestore()
+        defaultStore.collection("currentGameTableData").addSnapshotListener { (snapShot, error) in
+            guard let value = snapShot else {
+                print("snapShot is nil")
+                return
+            }
+            value.documentChanges.forEach { diff in
+                guard let dic = diff.document.data() as? [String: String] else {
+                    print("空or代入失敗")
+                    print("diff.document.data()の中身: \(diff.document.data())")
+                    return
+                }
+                
+                
+                
+            }
+        }
+        
+        
+//        setInabaCard()
+//        inabaCards.shuffle()
 
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
     }
     
-    func setInabaCard() {
-        inabaCards = [
-            (UIImage(named: "ina1")!, false, false),
-            (UIImage(named: "ina2")!, false, false),
-            (UIImage(named: "ina3")!, false, false),
-            (UIImage(named: "ina4")!, false, false),
-            (UIImage(named: "ina5")!, false, false),
-            (UIImage(named: "ina6")!, false, false),
-            (UIImage(named: "ina7")!, false, false),
-            (UIImage(named: "ina8")!, false, false),
-            (UIImage(named: "ina9")!, false, false),
-            (UIImage(named: "ina10")!, false, false),
-            (UIImage(named: "ina11")!, false, false),
-            (UIImage(named: "ina12")!, false, false),
-            (UIImage(named: "ina13")!, false, false),
-            (UIImage(named: "ina14")!, false, false),
-            (UIImage(named: "ina15")!, false, false),
-            (UIImage(named: "ina1")!, false, false),
-            (UIImage(named: "ina2")!, false, false),
-            (UIImage(named: "ina3")!, false, false),
-            (UIImage(named: "ina4")!, false, false),
-            (UIImage(named: "ina5")!, false, false),
-            (UIImage(named: "ina6")!, false, false),
-            (UIImage(named: "ina7")!, false, false),
-            (UIImage(named: "ina8")!, false, false),
-            (UIImage(named: "ina9")!, false, false),
-            (UIImage(named: "ina10")!, false, false),
-            (UIImage(named: "ina11")!, false, false),
-            (UIImage(named: "ina12")!, false, false),
-            (UIImage(named: "ina13")!, false, false),
-            (UIImage(named: "ina14")!, false, false),
-            (UIImage(named: "ina15")!, false, false)
-        ]
-    }
+//    func setInabaCard() {
+//        inabaCards = [
+//            (UIImage(named: "ina1")!, false, false),
+//            (UIImage(named: "ina2")!, false, false),
+//            (UIImage(named: "ina3")!, false, false),
+//            (UIImage(named: "ina4")!, false, false),
+//            (UIImage(named: "ina5")!, false, false),
+//            (UIImage(named: "ina6")!, false, false),
+//            (UIImage(named: "ina7")!, false, false),
+//            (UIImage(named: "ina8")!, false, false),
+//            (UIImage(named: "ina9")!, false, false),
+//            (UIImage(named: "ina10")!, false, false),
+//            (UIImage(named: "ina11")!, false, false),
+//            (UIImage(named: "ina12")!, false, false),
+//            (UIImage(named: "ina13")!, false, false),
+//            (UIImage(named: "ina14")!, false, false),
+//            (UIImage(named: "ina15")!, false, false),
+//            (UIImage(named: "ina1")!, false, false),
+//            (UIImage(named: "ina2")!, false, false),
+//            (UIImage(named: "ina3")!, false, false),
+//            (UIImage(named: "ina4")!, false, false),
+//            (UIImage(named: "ina5")!, false, false),
+//            (UIImage(named: "ina6")!, false, false),
+//            (UIImage(named: "ina7")!, false, false),
+//            (UIImage(named: "ina8")!, false, false),
+//            (UIImage(named: "ina9")!, false, false),
+//            (UIImage(named: "ina10")!, false, false),
+//            (UIImage(named: "ina11")!, false, false),
+//            (UIImage(named: "ina12")!, false, false),
+//            (UIImage(named: "ina13")!, false, false),
+//            (UIImage(named: "ina14")!, false, false),
+//            (UIImage(named: "ina15")!, false, false)
+//        ]
+//    }
 }
 
 extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {
