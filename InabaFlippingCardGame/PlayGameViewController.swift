@@ -92,26 +92,27 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
 
 extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return inabaCards.count
+        return 30
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionViewUtil.createCell(collectionView, identifier: CardCell.reusableIdentifier, indexPath) as! CardCell
-        if inabaCards[indexPath.row].2 {
+//        if inabaCards[indexPath.row].2 {
+        if newInabaCards[indexPath.row].isMatched {
             print("生成時: isMatchedがtrue")
-            cell.imageView.image = inabaCards[indexPath.row].0
-            inabaCards[indexPath.row].1 = true
+            cell.imageView.image = UIImage(named: newInabaCards[indexPath.row].imageName)!
+            newInabaCards[indexPath.row].isOpened = true
         }else {
             print("生成時: isMatchedがfalse")
             if indexPath.row % 2 == 0 {
-                if self.inabaCards[indexPath.row].1 {
-                    cell.imageView.image = inabaCards[indexPath.row].0
+                if self.newInabaCards[indexPath.row].isOpened {
+                    cell.imageView.image = UIImage(named: newInabaCards[indexPath.row].imageName)!
                 }else {
                     cell.imageView.image = UIImage(named: "CardBackImageRed")
                 }
             }else {
-                if self.inabaCards[indexPath.row].1 {
-                    cell.imageView.image = inabaCards[indexPath.row].0
+                if self.newInabaCards[indexPath.row].isOpened {
+                    cell.imageView.image = UIImage(named: newInabaCards[indexPath.row].imageName)!
                 }else {
                     cell.imageView.image = UIImage(named: "CardBackImageBlue")
                 }
@@ -121,29 +122,29 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if inabaCards[indexPath.row].1 == false {
-            self.inabaCards[indexPath.row].1 = true
+        if newInabaCards[indexPath.row].isOpened == false {
+            self.newInabaCards[indexPath.row].isOpened = true
             if self.flipCount == 2 {
                 self.flippedCard[1] = indexPath.row
                 //フリップ２回目　２枚がマッチしてるかジャッジ
-                if (inabaCards[flippedCard[0]].0) == (inabaCards[flippedCard[1]].0) {
+                if (newInabaCards[flippedCard[0]].imageName) == (newInabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
-                    print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
+                    print("マッチ結果: \(newInabaCards[flippedCard[0]]), \(newInabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     //マッチした！両方のisOpenedをtrueにする
-                    inabaCards[flippedCard[0]].2 = true
-                    inabaCards[flippedCard[1]].2 = true
+                    newInabaCards[flippedCard[0]].isMatched = true
+                    newInabaCards[flippedCard[1]].isMatched = true
                     self.flipCount = 1
                     self.flippedCard = [0,0]
                 }else {
                     print("マッチしませんでした")
-                    print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
+                    print("マッチ結果: \(newInabaCards[flippedCard[1]]), \(newInabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     collectionView.isUserInteractionEnabled = false
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                         //マッチしてないので、両方閉じる
-                        self.inabaCards[self.flippedCard[0]].1 = false
-                        self.inabaCards[self.flippedCard[1]].1 = false
+                        self.newInabaCards[self.flippedCard[0]].isOpened = false
+                        self.newInabaCards[self.flippedCard[1]].isOpened = false
                         self.flipCount = 1
                         self.flippedCard = [0,0]
                         collectionView.isUserInteractionEnabled = true
