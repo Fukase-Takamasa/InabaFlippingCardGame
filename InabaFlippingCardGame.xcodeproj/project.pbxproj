@@ -10,6 +10,9 @@
 		2A21B9E41C1B9F35EC2465AF /* Pods_InabaFlippingCardGame_InabaFlippingCardGameUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BCBD961D75512845566A28C /* Pods_InabaFlippingCardGame_InabaFlippingCardGameUITests.framework */; };
 		64B8D059733FF1B7FEDC4D7B /* Pods_InabaFlippingCardGame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8255BF4218CA8C88B22A7101 /* Pods_InabaFlippingCardGame.framework */; };
 		64C77D3546F679CCBF9588D7 /* Pods_InabaFlippingCardGameTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C05DB8CA90BB2C41AA4669 /* Pods_InabaFlippingCardGameTests.framework */; };
+		670989E92417D3E10068FCF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 670989E82417D3E10068FCF9 /* GoogleService-Info.plist */; };
+		670989EB2417D3EE0068FCF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 670989EA2417D3EE0068FCF9 /* GoogleService-Info.plist */; };
+		670989ED2417D3F30068FCF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 670989EC2417D3F30068FCF9 /* GoogleService-Info.plist */; };
 		6784A7DC2413E882004ED752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DB2413E882004ED752 /* AppDelegate.swift */; };
 		6784A7DE2413E882004ED752 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DD2413E882004ED752 /* SceneDelegate.swift */; };
 		6784A7E02413E882004ED752 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784A7DF2413E882004ED752 /* MainViewController.swift */; };
@@ -49,6 +52,9 @@
 		15D869EB9EBE0F186355117E /* Pods-InabaFlippingCardGameTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InabaFlippingCardGameTests.release.xcconfig"; path = "Target Support Files/Pods-InabaFlippingCardGameTests/Pods-InabaFlippingCardGameTests.release.xcconfig"; sourceTree = "<group>"; };
 		1BCBD961D75512845566A28C /* Pods_InabaFlippingCardGame_InabaFlippingCardGameUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InabaFlippingCardGame_InabaFlippingCardGameUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FD73CFD462A0C32FA7FEC8 /* Pods-InabaFlippingCardGame-InabaFlippingCardGameUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InabaFlippingCardGame-InabaFlippingCardGameUITests.release.xcconfig"; path = "Target Support Files/Pods-InabaFlippingCardGame-InabaFlippingCardGameUITests/Pods-InabaFlippingCardGame-InabaFlippingCardGameUITests.release.xcconfig"; sourceTree = "<group>"; };
+		670989E82417D3E10068FCF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		670989EA2417D3EE0068FCF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		670989EC2417D3F30068FCF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6784A7D82413E882004ED752 /* InabaFlippingCardGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InabaFlippingCardGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6784A7DB2413E882004ED752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6784A7DD2413E882004ED752 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +159,7 @@
 				6784A7E42413E884004ED752 /* Assets.xcassets */,
 				6784A7E62413E884004ED752 /* LaunchScreen.storyboard */,
 				6784A7E92413E884004ED752 /* Info.plist */,
+				670989E82417D3E10068FCF9 /* GoogleService-Info.plist */,
 			);
 			path = InabaFlippingCardGame;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 			children = (
 				6784A7F22413E884004ED752 /* InabaFlippingCardGameTests.swift */,
 				6784A7F42413E884004ED752 /* Info.plist */,
+				670989EA2417D3EE0068FCF9 /* GoogleService-Info.plist */,
 			);
 			path = InabaFlippingCardGameTests;
 			sourceTree = "<group>";
@@ -171,6 +179,7 @@
 			children = (
 				6784A7FD2413E884004ED752 /* InabaFlippingCardGameUITests.swift */,
 				6784A7FF2413E884004ED752 /* Info.plist */,
+				670989EC2417D3F30068FCF9 /* GoogleService-Info.plist */,
 			);
 			path = InabaFlippingCardGameUITests;
 			sourceTree = "<group>";
@@ -319,6 +328,7 @@
 				6784A812241404D4004ED752 /* CardCell.xib in Resources */,
 				6784A7E52413E884004ED752 /* Assets.xcassets in Resources */,
 				6784A7E32413E882004ED752 /* Main.storyboard in Resources */,
+				670989E92417D3E10068FCF9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +336,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				670989EB2417D3EE0068FCF9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				670989ED2417D3F30068FCF9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

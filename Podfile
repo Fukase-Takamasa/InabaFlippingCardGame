@@ -14,6 +14,7 @@ pod 'PKHUD'
 pod 'Firebase/Analytics'
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
+pod 'FirebaseFirestoreSwift'
 
   target 'InabaFlippingCardGameTests' do
     inherit! :search_paths
