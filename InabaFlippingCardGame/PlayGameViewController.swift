@@ -109,7 +109,6 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inabaCards[indexPath.row].isOpened == false {
-            
             if flipCount == 1 {
                 print("flipCount: \(self.flipCount)")
                 flipCount += 1
@@ -127,18 +126,12 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
             }else {
                 print("flipCount: \(self.flipCount)")
                 flippedCard[1] = indexPath.row
-                
                 //フリップ２回目　２枚がマッチしてるかジャッジ
                 if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     //マッチした！両方のisOpenedをtrueにする
-                    //
-                    inabaCards[flippedCard[0]].isMatched = true
-                    //
-                    inabaCards[flippedCard[1]].isMatched = true
-                    
                     db.collection("currentGameTableData").document("cardData\(flippedCard[0] + 1)").setData([
                         "isOpened": true,
                         "isMatched": true
@@ -161,23 +154,41 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                             print("setData Succesful")
                         }
                     }
-                    
                     self.flipCount = 1
                     self.flippedCard = [0,0]
-                    
                 }else {
                     print("マッチしなかったorz")
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     collectionView.isUserInteractionEnabled = false
+                    
+                    //ここで一旦　isOpened: trueだけ送信する
+                    print("ここで一旦　isOpened: trueだけ送信する")
+                    db.collection("currentGameTableData").document("cardData\(flippedCard[0] + 1)").setData([
+                        "isOpened": true,
+                    ], merge: true) { err in
+                        print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrue, isMatchedをtrueにした")
+                        if let err = err {
+                            print("errです: \(err)")
+                        }else {
+                            print("setData Succesful")
+                        }
+                    }
+                    db.collection("currentGameTableData").document("cardData\(flippedCard[1] + 1)").setData([
+                        "isOpened": true,
+                    ], merge: true) { err in
+                        print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
+                        if let err = err {
+                            print("errです: \(err)")
+                        }else {
+                            print("setData Succesful")
+                        }
+                    }
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-                        //マッチしてないので、両方閉じる
-                        self.inabaCards[self.flippedCard[0]].isOpened = false
-                        self.inabaCards[self.flippedCard[1]].isOpened = false
-                        
+                        print("遅延処理内のflippedCard: \(self.flippedCard)")
+                        //マッチしてないので、2秒後に両方閉じる
                         self.db.collection("currentGameTableData").document("cardData\(self.flippedCard[0] + 1)").setData([
-                            "isOpened": true,
-                            "isMatched": true
+                            "isOpened": false,
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrue, isMatchedをtrueにした")
                             if let err = err {
@@ -187,8 +198,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                             }
                         }
                         self.db.collection("currentGameTableData").document("cardData\(self.flippedCard[1] + 1)").setData([
-                            "isOpened": true,
-                            "isMatched": true
+                            "isOpened": false,
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
                             if let err = err {
@@ -197,23 +207,11 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                                 print("setData Succesful")
                             }
                         }
-                        
                         self.flipCount = 1
                         self.flippedCard = [0,0]
                         collectionView.isUserInteractionEnabled = true
-                        collectionView.reloadData()
+//                        collectionView.reloadData()
                     }
-                }
-            }
-            
-            db.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
-                "isOpened": true
-            ], merge: true) { err in
-                print("indexPath.row: \(indexPath.row)のisOpenedをtrueにした")
-                if let err = err {
-                    print("errです: \(err)")
-                }else {
-                    print("setData Succesful")
                 }
             }
         }
