@@ -23,7 +23,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     }
     
     let disposeBag = DisposeBag()
-    var defaultStore: Firestore!
+    var db: Firestore!
     var inabaCards: [CardData] = []
 //    var dataBaseListener: ListenerRegistration?
     var flipCount = 1
@@ -48,25 +48,28 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         }.disposed(by: disposeBag)
         
         //Firestore
-        defaultStore = Firestore.firestore()
-        defaultStore.collection("currentGameTableData").addSnapshotListener({ (snapShot, error) in
-            print("snapShot流れた")
-            if let snapShot = snapShot {
-                snapShot.documentChanges.forEach{diff in
-                    print("documentChanges")
-                    print("diff: \(diff)")
+        db = Firestore.firestore()
+        
+        db.collection("currentGameTableData")
+            .order(by: "id")
+            .addSnapshotListener({ (snapShot, error) in
+                print("snapShot流れた")
+                if let snapShot = snapShot {
+                    snapShot.documentChanges.forEach{diff in
+                        print("documentChanges")
+                        print("diff: \(diff)")
+                    }
                 }
-            }
-            if let snapShot = snapShot {
-                self.inabaCards = snapShot.documents.map{ data -> CardData in
-                    let data = data.data()
-                    return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
+                if let snapShot = snapShot {
+                    self.inabaCards = snapShot.documents.map{ data -> CardData in
+                        let data = data.data()
+                        return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
+                    }
+                    self.collectionView.reloadData()
+                }else {
+                    print("snapShotListener Error: \(error)")
                 }
-                self.collectionView.reloadData()
-            }else {
-                print("snapShotListener Error: \(error)")
-            }
-        })
+            })
     }
     
 //    func setAllCardData() {
@@ -144,10 +147,10 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inabaCards[indexPath.row].isOpened == false {
             //
-            defaultStore.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
+            db.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
 //                "imageName": "ina\(indexPath.row + 1)",
-//                "isOpened": true
-                "row": (indexPath.row)
+                "isOpened": true
+//                "row": (indexPath.row)
             ], merge: true) { err in
                 print("indexPath.row: \(indexPath.row)のisOpenedをtrueにした")
                 if let err = err {
@@ -157,7 +160,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 }
             }
         }else {
-            defaultStore.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
+            db.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
 //                "imageName": "ina\(indexPath.row + 1)",
                 "isOpened": false
             ], merge: true) { err in
