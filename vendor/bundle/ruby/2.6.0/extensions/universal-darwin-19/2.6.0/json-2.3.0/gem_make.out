@@ -1,0 +1,13 @@
+current directory: /Users/fukasekisyou/Library/Autosave Information/InabaFlippingCardGame/vendor/bundle/ruby/2.6.0/gems/json-2.3.0/ext/json
+/System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/bin/ruby -I /Library/Ruby/Site/2.6.0 -r ./siteconf20200312-7760-1p5kr9y.rb extconf.rb
+creating Makefile
+
+current directory: /Users/fukasekisyou/Library/Autosave Information/InabaFlippingCardGame/vendor/bundle/ruby/2.6.0/gems/json-2.3.0/ext/json
+make "DESTDIR=" clean
+
+current directory: /Users/fukasekisyou/Library/Autosave Information/InabaFlippingCardGame/vendor/bundle/ruby/2.6.0/gems/json-2.3.0/ext/json
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+current directory: /Users/fukasekisyou/Library/Autosave Information/InabaFlippingCardGame/vendor/bundle/ruby/2.6.0/gems/json-2.3.0/ext/json
+make "DESTDIR=" install
