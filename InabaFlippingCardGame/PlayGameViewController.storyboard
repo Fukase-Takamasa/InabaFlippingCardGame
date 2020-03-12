@@ -51,9 +51,31 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dMt-SW-BVe"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ゲーム画面" id="Phu-2g-wRT"/>
+                    <navigationItem key="navigationItem" title="ゲーム画面" id="Phu-2g-wRT">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="4te-hi-iQN">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="VaJ-LC-ct1">
+                                <rect key="frame" x="20" y="7" width="108" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="カードをセット">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="nPT-i8-3a0">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="G3O-w4-iBE">
+                                <rect key="frame" x="375.5" y="11" width="18.5" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="multiply" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="m6l-rB-1WI" id="tql-rn-qSQ"/>
+                        <outlet property="quitButton" destination="G3O-w4-iBE" id="asi-EU-BdR"/>
+                        <outlet property="setCardButton" destination="VaJ-LC-ct1" id="Fbu-Xr-bzz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHp-mV-D5K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -79,4 +101,7 @@
             <point key="canvasLocation" x="971.01449275362324" y="147.99107142857142"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="multiply" catalog="system" width="64" height="54"/>
+    </resources>
 </document>
