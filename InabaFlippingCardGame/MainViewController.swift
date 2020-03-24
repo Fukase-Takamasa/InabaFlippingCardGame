@@ -18,6 +18,7 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
     
     let dispopseBag = DisposeBag()
     var db: Firestore!
+    var loadedIndex = 0
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var startButton: UIButton!
@@ -38,6 +39,7 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
     }
     
     @IBAction func setData(_ sender: Any) {
+        HUD.show(.progress)
         for i in 1...15 {
             db.collection("currentGameTableData").document("cardData\(i)").setData([
                 "imageName": "ina\(i)",
@@ -65,36 +67,13 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
                     print("setData Succesful(\(i + 15))")
                 }
             }
+            if (i + 15) == 30 {
+                HUD.flash(.success, delay: 1.5) { (Bool) in
+                    HUD.hide()
+                }
+            }
         }
-        
-        
-//        for i in 1...15 {
-//                db.collection("currentGameTableData").document("cardData\(i)").setData([
-////                    "imageName": "ina\(i)"
-//                    "isOpened": false,
-//                    "isMatched": false
-//                ], merge: true) { err in
-//                    print(i)
-//                    if let err = err {
-//                        print("errです: \(err)")
-//                    }else {
-//                        print("setData Succesful")
-//                    }
-//                }
-//                db.collection("currentGameTableData").document("cardData\(i + 15)").setData([
-////                    "imageName": "ina\(i)"
-//                    "isOpened": false,
-//                    "isMatched": false
-//                ], merge: true) { err in
-//                    print(i)
-//                    if let err = err {
-//                        print("errです: \(err)")
-//                    }else {
-//                        print("setData Succesful(+15)")
-//                    }
-//                }
-//        }
-        
+//        HUD.hide()
     }
     
 

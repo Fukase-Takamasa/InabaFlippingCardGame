@@ -27,8 +27,6 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var inabaCards: [CardData] = []
     var flipCount = 1
     var flippedCard = [0, 0]
-    var isUserTouchEnabled = true
-    var randomNumbers: [Int] = []
     
     @IBOutlet weak var setCardButton: UIButton!
     @IBOutlet weak var quitButton: UIButton!
@@ -210,61 +208,12 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         self.flipCount = 1
                         self.flippedCard = [0,0]
                         collectionView.isUserInteractionEnabled = true
-//                        collectionView.reloadData()
                     }
                 }
             }
         }
-        
-//            else {
-//            db.collection("currentGameTableData").document("cardData\(indexPath.row + 1)").setData([
-//                "isOpened": false
-//            ], merge: true) { err in
-//                print("indexPath.row: \(indexPath.row)のisOpenedをfalseにした")
-//                if let err = err {
-//                    print("errです: \(err)")
-//                }else {
-//                    print("setData Succesful")
-//                }
-//            }
-//        }
-//        collectionView.reloadData()
-    }
-//            self.inabaCards[indexPath.row].isOpened = true
-//            if self.flipCount == 2 {
-//                self.flippedCard[1] = indexPath.row
-//                //フリップ２回目　２枚がマッチしてるかジャッジ
-//                if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
-//                    print("マッチした！")
-//                    print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
-//                    print("flippedCard: \(flippedCard)")
-//                    //マッチした！両方のisOpenedをtrueにする
-//                    //
-//                    inabaCards[flippedCard[0]].isMatched = true
-//                    //
-//                    inabaCards[flippedCard[1]].isMatched = true
-//                    self.flipCount = 1
-//                    self.flippedCard = [0,0]
-//                }else {
-//                    print("マッチしませんでした")
-//                    print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
-//                    print("flippedCard: \(flippedCard)")
-//                    collectionView.isUserInteractionEnabled = false
-//                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-//                        //マッチしてないので、両方閉じる
-//                        self.inabaCards[self.flippedCard[0]].isOpened = false
-//                        self.inabaCards[self.flippedCard[1]].isOpened = false
-//                        self.flipCount = 1
-//                        self.flippedCard = [0,0]
-//                        collectionView.isUserInteractionEnabled = true
-//                        collectionView.reloadData()
-//                    }
-//                }
-//            }else {
-//                self.flipCount += 1
-//                self.flippedCard[0] = indexPath.row
-//            }
 
+    }
 }
 
 extension PlayGameViewController: UICollectionViewDelegateFlowLayout {
