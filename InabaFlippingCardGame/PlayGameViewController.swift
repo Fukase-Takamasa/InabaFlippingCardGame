@@ -52,12 +52,12 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             .order(by: "id")
             .addSnapshotListener({ (snapShot, error) in
                 print("snapShot流れた")
-                if let snapShot = snapShot {
-                    snapShot.documentChanges.forEach{diff in
-                        print("documentChanges")
-                        print("diff: \(diff)")
-                    }
-                }
+//                if let snapShot = snapShot {
+//                    snapShot.documentChanges.forEach{diff in
+//                        print("documentChanges")
+//                        print("diff: \(diff)")
+//                    }
+//                }
                 if let snapShot = snapShot {
                     self.inabaCards = snapShot.documents.map{ data -> CardData in
                         let data = data.data()
