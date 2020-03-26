@@ -65,7 +65,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="m6l-rB-1WI" id="tql-rn-qSQ"/>
-                        <outlet property="quitButton" destination="G3O-w4-iBE" id="asi-EU-BdR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHp-mV-D5K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

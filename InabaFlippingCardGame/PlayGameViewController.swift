@@ -28,18 +28,12 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var flipCount = 1
     var flippedCard = [0, 0]
     
-    @IBOutlet weak var quitButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
-        
-        //other
-        quitButton.rx.tap.subscribe{ _ in
-            self.dismiss(animated: true, completion: nil)
-        }.disposed(by: disposeBag)
         
         //Firestore
         db = Firestore.firestore()
