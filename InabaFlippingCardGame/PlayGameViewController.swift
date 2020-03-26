@@ -28,7 +28,6 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var flipCount = 1
     var flippedCard = [0, 0]
     
-    @IBOutlet weak var setCardButton: UIButton!
     @IBOutlet weak var quitButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -38,8 +37,6 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         
         //other
-        setCardButton.rx.tap.subscribe{ _ in
-        }.disposed(by: disposeBag)
         quitButton.rx.tap.subscribe{ _ in
             self.dismiss(animated: true, completion: nil)
         }.disposed(by: disposeBag)
@@ -65,7 +62,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                     }
                     self.collectionView.reloadData()
                 }else {
-                    print("snapShotListener Error: \(error)")
+                    print("snapShotListener Error: \(String(describing: error))")
                 }
             })
     }
@@ -106,6 +103,8 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("inabaCards: \(inabaCards)")
+
         if inabaCards[indexPath.row].isOpened == false {
             if flipCount == 1 {
                 print("flipCount: \(self.flipCount)")
