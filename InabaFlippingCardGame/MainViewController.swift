@@ -30,16 +30,21 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
         //other
         startButton.rx.tap.subscribe{ _ in
             let vc = PlayGameViewController.instantiate()
-            let navi = UINavigationController(rootViewController: vc)
-            navi.modalPresentationStyle = .fullScreen
-            self.present(navi, animated: true, completion: nil)
-//            self.navigationController?.pushViewController(vc, animated: true)
+//            let navi = UINavigationController(rootViewController: vc)
+//            navi.modalPresentationStyle = .fullScreen
+//            self.present(navi, animated: true, completion: nil)
+            self.navigationController?.pushViewController(vc, animated: true)
             
         }.disposed(by: dispopseBag)
     }
     
     @IBAction func setData(_ sender: Any) {
         HUD.show(.progress)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            HUD.flash(.success, delay: 1.5) { (Bool) in
+                HUD.hide()
+            }
+        }
         for i in 1...15 {
             db.collection("currentGameTableData").document("cardData\(i)").setData([
                 "imageName": "ina\(i)",
@@ -68,12 +73,9 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
                 }
             }
             if (i + 15) == 30 {
-                HUD.flash(.success, delay: 1.5) { (Bool) in
-                    HUD.hide()
-                }
+                print("loaded completed")
             }
         }
-//        HUD.hide()
     }
     
 
