@@ -73,24 +73,15 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = CollectionViewUtil.createCell(collectionView, identifier: CardCell.reusableIdentifier, indexPath) as! CardCell
-        if inabaCards[indexPath.row].isMatched {
+        if inabaCards[indexPath.row].isMatched || inabaCards[indexPath.row].isOpened {
             print("生成時: isMatchedがtrue")
             cell.imageView.image = UIImage(named: inabaCards[indexPath.row].imageName)!
-            inabaCards[indexPath.row].isOpened = true
         }else {
             print("生成時: isMatchedがfalse")
             if indexPath.row % 2 == 0 {
-                if self.inabaCards[indexPath.row].isOpened {
-                    cell.imageView.image = UIImage(named: inabaCards[indexPath.row].imageName)!
-                }else {
-                    cell.imageView.image = UIImage(named: "CardBackImageRed")
-                }
+                cell.imageView.image = UIImage(named: "CardBackImageRed")
             }else {
-                if self.inabaCards[indexPath.row].isOpened {
-                    cell.imageView.image = UIImage(named: inabaCards[indexPath.row].imageName)!
-                }else {
-                    cell.imageView.image = UIImage(named: "CardBackImageBlue")
-                }
+                cell.imageView.image = UIImage(named: "CardBackImageBlue")
             }
         }
         return cell
