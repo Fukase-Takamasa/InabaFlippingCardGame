@@ -152,19 +152,8 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     collectionView.isUserInteractionEnabled = false
-                    
                     //ここで一旦　isOpened: trueだけ送信する
                     print("ここで一旦　isOpened: trueだけ送信する")
-                    db.collection("currentGameTableData").document("cardData\(flippedCard[0] + 1)").setData([
-                        "isOpened": true,
-                    ], merge: true) { err in
-                        print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrue, isMatchedをtrueにした")
-                        if let err = err {
-                            print("errです: \(err)")
-                        }else {
-                            print("setData Succesful")
-                        }
-                    }
                     db.collection("currentGameTableData").document("cardData\(flippedCard[1] + 1)").setData([
                         "isOpened": true,
                     ], merge: true) { err in
