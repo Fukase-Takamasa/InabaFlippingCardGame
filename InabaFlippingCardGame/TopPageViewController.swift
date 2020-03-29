@@ -156,11 +156,11 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
         }else {
             switch indexPath.row {
             case 9:
-                cell.roomNameLabel.text = "ルーム1\(indexPath.row + 1)"
+                cell.roomNameLabel.text = "ルーム1\(indexPath.row + 1)　　1/2人"
                 cell.roomStateLabel.text = "参加する"
                 cell.roomStateLabelBaseView.isHidden = false
             default:
-                cell.roomNameLabel.text = "ルーム10\(indexPath.row + 1)"
+                cell.roomNameLabel.text = "ルーム10\(indexPath.row + 1)　　0/2人"
                 cell.roomStateLabel.text = "参加する"
                 cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
             }
