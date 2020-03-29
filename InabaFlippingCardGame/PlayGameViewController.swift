@@ -27,28 +27,23 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var inabaCards: [CardData] = []
     var flipCount = 1
     var flippedCard = [0, 0]
+    var roomNumber = 0
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "ルーム\(roomNumber)"
         
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         
         //Firestore
         db = Firestore.firestore()
         
-        db.collection("currentGameTableData")
-            //DB内のデータをidで昇順ソートしてから、取得
+        db.collection("rooms").document("ルーム\(roomNumber)").collection("cardData")
             .order(by: "id")
-            .addSnapshotListener({ (snapShot, error) in
+            .addSnapshotListener({ (snapShot, err) in
                 print("snapShot流れた")
-//                if let snapShot = snapShot {
-//                    snapShot.documentChanges.forEach{diff in
-//                        print("documentChanges")
-//                        print("diff: \(diff)")
-//                    }
-//                }
                 if let snapShot = snapShot {
                     self.inabaCards = snapShot.documents.map{ data -> CardData in
                         let data = data.data()
@@ -56,7 +51,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                     }
                     self.collectionView.reloadData()
                 }else {
-                    print("snapShotListener Error: \(String(describing: error))")
+                    print("Error: \(String(describing: err))")
                 }
             })
     }
@@ -95,9 +90,9 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 print("flipCount: \(self.flipCount)")
                 flipCount += 1
                 flippedCard[0] = indexPath.row
-                db.collection("currentGameTableData").document("cardData\(flippedCard[0] + 1)").setData([
-                    "isOpened": true
-                ], merge: true) { err in
+                db.collection("rooms").document("ルーム\(roomNumber)").collection("cardData").document("cardData\(flippedCard[0] + 1)").setData([
+                        "isOpened": true
+                    ], merge: true) { err in
                     print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrueにした")
                     if let err = err {
                         print("errです: \(err)")
@@ -114,7 +109,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     //マッチした！isOpenedをtrueにする
-                    db.collection("currentGameTableData").document("cardData\(flippedCard[1] + 1)").setData([
+                    db.collection("rooms").document("ルーム\(roomNumber)").collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
                         "isOpened": true,
                         "isMatched": true
                     ], merge: true) { err in
@@ -134,7 +129,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     collectionView.isUserInteractionEnabled = false
                     //ここで一旦　isOpened: trueだけ送信する
                     print("ここで一旦　isOpened: trueだけ送信する")
-                    db.collection("currentGameTableData").document("cardData\(flippedCard[1] + 1)").setData([
+                    db.collection("rooms").document("ルーム\(roomNumber)").collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
                         "isOpened": true,
                     ], merge: true) { err in
                         print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
@@ -147,7 +142,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                         print("遅延処理内のflippedCard: \(self.flippedCard)")
                         //マッチしてないので、2秒後に両方閉じる
-                        self.db.collection("currentGameTableData").document("cardData\(self.flippedCard[0] + 1)").setData([
+                        self.db.collection("rooms").document("ルーム\(self.roomNumber)").collection("cardData").document("cardData\(self.flippedCard[0] + 1)").setData([
                             "isOpened": false,
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrue, isMatchedをtrueにした")
@@ -157,7 +152,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                                 print("setData Succesful")
                             }
                         }
-                        self.db.collection("currentGameTableData").document("cardData\(self.flippedCard[1] + 1)").setData([
+                        self.db.collection("rooms").document("ルーム\(self.roomNumber)").collection("cardData").document("cardData\(self.flippedCard[1] + 1)").setData([
                             "isOpened": false,
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")

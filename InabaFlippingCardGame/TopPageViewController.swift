@@ -55,7 +55,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                             "isMatched": false,
                             "id": i
                         ], merge: true) { err in
-                            self.CompOrErr(err: err, i: i, start)
+                            self.CompOrErr(err: err, i: i, start, row: indexPath.row)
                     }
                 }
             }
@@ -95,7 +95,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
 
     }
     
-    func CompOrErr(err: Error?, i: Int, _ start: Date) {
+    func CompOrErr(err: Error?, i: Int, _ start: Date, row: Int) {
         if let err = err {
             print("index(\(i))errです: \(err)")
         }else {
@@ -106,6 +106,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 print("処理時間: \(elapsedTime)秒")
                 HUD.flash(.success, delay: 1) { (Bool) in
                     let vc = PlayGameViewController.instantiate()
+                    vc.roomNumber = (row + 101)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }

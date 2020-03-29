@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--InabaFlippingCardGame≪Swift≫-->
+        <!--ロビー-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TopPageViewController" customModule="InabaFlippingCardGame" customModuleProvider="target" sceneMemberID="viewController">
@@ -165,7 +165,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="InabaFlippingCardGame≪Swift≫" id="ikD-rE-KTH"/>
+                    <navigationItem key="navigationItem" title="ロビー" id="ikD-rE-KTH"/>
                     <connections>
                         <outlet property="fightWithYourselfButton" destination="nwi-cs-4dA" id="aBI-2b-mWf"/>
                         <outlet property="playWithCpuButton" destination="Seh-QZ-eXz" id="9If-F1-Nsk"/>
