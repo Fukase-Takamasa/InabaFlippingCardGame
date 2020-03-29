@@ -19,15 +19,17 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
     let dispopseBag = DisposeBag()
     var db: Firestore!
 
-    @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var fightWithYourselfButton: UIButton!
+    @IBOutlet weak var playWithCpuButton: UIButton!
+    @IBOutlet weak var createNewGameButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         db = Firestore.firestore()
         
         //other
-        startButton.rx.tap.subscribe{ _ in
+        createNewGameButton.rx.tap.subscribe{ _ in
             let start = Date()
             HUD.show(.progress)
             for i in 1...30 {
@@ -59,5 +61,22 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
             }
         }
     }
+}
+
+extension PlayGameViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        <#code#>
+    }
+    
+    
 }
 
