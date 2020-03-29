@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TopPageViewController.swift
 //  InabaFlippingCardGame
 //
 //  Created by 深瀬貴将 on 2020/03/07.
@@ -14,7 +14,7 @@ import InstantiateStandard
 import PKHUD
 import Firebase
 
-class MainViewController: UIViewController, StoryboardInstantiatable {
+class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     let dispopseBag = DisposeBag()
     var db: Firestore!
@@ -26,6 +26,8 @@ class MainViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TableViewUtil.registerCell
+        
         db = Firestore.firestore()
         
         //other
