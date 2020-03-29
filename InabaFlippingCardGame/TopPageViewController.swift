@@ -26,8 +26,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        TableViewUtil.registerCell
-        
+        TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
         db = Firestore.firestore()
         
         //other
@@ -55,7 +54,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             if i == 30 {
                 let elapsedTime = Date().timeIntervalSince(start)
                 print("30 Cards data set completed!")
-                print("処理時間: \(elapsedTime)")
+                print("処理時間: \(elapsedTime)秒")
                 HUD.flash(.success, delay: 1) { (Bool) in
                     let vc = PlayGameViewController.instantiate()
                     self.navigationController?.pushViewController(vc, animated: true)
@@ -65,7 +64,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     }
 }
 
-extension PlayGameViewController: UITableViewDelegate, UITableViewDataSource {
+extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
@@ -76,9 +75,28 @@ extension PlayGameViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let cell = TableViewUtil.createCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier, indexPath) as! TopPageRoomListCell
+        
+        switch indexPath.row {
+        case 0:
+            cell.roomNameLabel.text = "たぬきちの部屋"
+            cell.roomStateLabel.text = "参加する"
+            cell.roomStateLabel.backgroundColor = UIColor.systemTeal
+        case 1:
+            cell.roomNameLabel.text = "いなばっちの部屋"
+            cell.roomStateLabel.text = "観戦する"
+            cell.roomStateLabel.backgroundColor = UIColor.systemOrange
+        case 5:
+            cell.roomNameLabel.text = "いなばっちの部屋"
+            cell.roomStateLabel.text = "観戦する"
+            cell.roomStateLabel.backgroundColor = UIColor.systemOrange
+        default:
+            cell.roomNameLabel.text = "たぬきちの部屋"
+            cell.roomStateLabel.text = "参加する"
+            cell.roomStateLabel.backgroundColor = UIColor.systemTeal
+        }
+        return cell
     }
-    
     
 }
 
