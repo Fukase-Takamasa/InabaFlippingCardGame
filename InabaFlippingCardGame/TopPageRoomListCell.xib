@@ -9,53 +9,79 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="75" id="KGk-i7-Jjw" customClass="TopPageRoomListCell" customModule="InabaFlippingCardGame" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" rowHeight="75" id="KGk-i7-Jjw" customClass="TopPageRoomListCell" customModule="InabaFlippingCardGame" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="○○○○の部屋" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLs-h1-I67">
-                        <rect key="frame" x="16" y="0.0" width="208" height="75"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="参加する" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBf-r2-9hO">
-                        <rect key="frame" x="224" y="22.5" width="80" height="30"/>
-                        <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fya-uG-whp" userLabel="BaseView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ルーム101" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLs-h1-I67">
+                                <rect key="frame" x="16" y="0.0" width="198" height="75"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cv3-78-TsO" userLabel="RoomStateLabelBaseView">
+                                <rect key="frame" x="214" y="22.5" width="90" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="参加する" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBf-r2-9hO">
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="zBf-r2-9hO" secondAttribute="trailing" id="PlL-EI-vyl"/>
+                                    <constraint firstItem="zBf-r2-9hO" firstAttribute="centerY" secondItem="cv3-78-TsO" secondAttribute="centerY" id="WKt-8H-ac5"/>
+                                    <constraint firstAttribute="width" constant="90" id="atd-G2-f9E"/>
+                                    <constraint firstAttribute="bottom" secondItem="zBf-r2-9hO" secondAttribute="bottom" id="cT7-l1-RCU"/>
+                                    <constraint firstItem="zBf-r2-9hO" firstAttribute="centerX" secondItem="cv3-78-TsO" secondAttribute="centerX" id="ewT-eA-WGa"/>
+                                    <constraint firstAttribute="height" constant="30" id="hCD-eb-Uto"/>
+                                    <constraint firstItem="zBf-r2-9hO" firstAttribute="leading" secondItem="cv3-78-TsO" secondAttribute="leading" id="kHl-WC-aRP"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" constant="80" id="0jJ-D8-750"/>
-                            <constraint firstAttribute="height" constant="30" id="T8W-et-uav"/>
+                            <constraint firstItem="eLs-h1-I67" firstAttribute="top" secondItem="fya-uG-whp" secondAttribute="top" id="8C7-0c-jyk"/>
+                            <constraint firstAttribute="trailing" secondItem="cv3-78-TsO" secondAttribute="trailing" constant="16" id="CJf-VV-DYU"/>
+                            <constraint firstAttribute="bottom" secondItem="eLs-h1-I67" secondAttribute="bottom" id="Mov-XD-JBv"/>
+                            <constraint firstItem="eLs-h1-I67" firstAttribute="leading" secondItem="fya-uG-whp" secondAttribute="leading" constant="16" id="Qhs-pp-GLI"/>
+                            <constraint firstItem="cv3-78-TsO" firstAttribute="centerY" secondItem="fya-uG-whp" secondAttribute="centerY" id="dyr-hc-yus"/>
+                            <constraint firstItem="cv3-78-TsO" firstAttribute="leading" secondItem="eLs-h1-I67" secondAttribute="trailing" id="p4J-au-5AA"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                <real key="value" value="0.0"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="10"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </label>
+                    </view>
                 </subviews>
-                <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstItem="zBf-r2-9hO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3zt-4u-xZO"/>
-                    <constraint firstItem="zBf-r2-9hO" firstAttribute="leading" secondItem="eLs-h1-I67" secondAttribute="trailing" id="XFg-aD-ciO"/>
-                    <constraint firstAttribute="bottom" secondItem="eLs-h1-I67" secondAttribute="bottom" id="Xit-do-ZRL"/>
-                    <constraint firstItem="eLs-h1-I67" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bDI-h2-A8P"/>
-                    <constraint firstItem="eLs-h1-I67" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="rIq-nN-ayI"/>
-                    <constraint firstAttribute="trailing" secondItem="zBf-r2-9hO" secondAttribute="trailing" constant="16" id="vSG-yg-NA0"/>
+                    <constraint firstAttribute="trailing" secondItem="fya-uG-whp" secondAttribute="trailing" id="2DH-77-5Hd"/>
+                    <constraint firstAttribute="bottom" secondItem="fya-uG-whp" secondAttribute="bottom" id="30x-LC-t7d"/>
+                    <constraint firstItem="fya-uG-whp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HzE-fJ-USB"/>
+                    <constraint firstItem="fya-uG-whp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kxm-4d-p2C"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="roomNameLabel" destination="eLs-h1-I67" id="mnT-Li-DO3"/>
                 <outlet property="roomStateLabel" destination="zBf-r2-9hO" id="odc-ch-Dip"/>
+                <outlet property="roomStateLabelBaseView" destination="cv3-78-TsO" id="yFm-eE-EYt"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="126.22767857142857"/>
         </tableViewCell>

@@ -26,8 +26,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
         db = Firestore.firestore()
+
+        TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
         
         //other
         createNewGameButton.rx.tap.subscribe{ _ in
@@ -66,6 +67,10 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
 
 extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "だれかのゲームに参加する"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
@@ -79,21 +84,21 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell.roomNameLabel.text = "たぬきちの部屋"
+            cell.roomNameLabel.text = "ルーム10\(indexPath.row)"
             cell.roomStateLabel.text = "参加する"
-            cell.roomStateLabel.backgroundColor = UIColor.systemTeal
+            cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
         case 1:
-            cell.roomNameLabel.text = "いなばっちの部屋"
+            cell.roomNameLabel.text = "ルーム10\(indexPath.row)"
             cell.roomStateLabel.text = "観戦する"
-            cell.roomStateLabel.backgroundColor = UIColor.systemOrange
+            cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
         case 5:
-            cell.roomNameLabel.text = "いなばっちの部屋"
+            cell.roomNameLabel.text = "ルーム10\(indexPath.row)"
             cell.roomStateLabel.text = "観戦する"
-            cell.roomStateLabel.backgroundColor = UIColor.systemOrange
+            cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
         default:
-            cell.roomNameLabel.text = "たぬきちの部屋"
+            cell.roomNameLabel.text = "ルーム10\(indexPath.row)"
             cell.roomStateLabel.text = "参加する"
-            cell.roomStateLabel.backgroundColor = UIColor.systemTeal
+            cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
         }
         return cell
     }

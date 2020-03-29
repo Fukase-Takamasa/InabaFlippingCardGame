@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ひとりで遊ぶ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTZ-Vk-dL1">
-                                <rect key="frame" x="50" y="128" width="152" height="30"/>
+                                <rect key="frame" x="20" y="118" width="152" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="152" id="Fg9-SA-zdQ"/>
                                     <constraint firstAttribute="height" constant="30" id="QxN-Ox-5FV"/>
@@ -25,26 +25,26 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="だれかと遊ぶ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-IS-6xr">
-                                <rect key="frame" x="50" y="323" width="152" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="オンラインで遊ぶ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-IS-6xr">
+                                <rect key="frame" x="20" y="303" width="203" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="8Im-Wb-vmm"/>
                                     <constraint firstAttribute="height" constant="30" id="Wmo-fv-UIT"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwi-cs-4dA">
-                                <rect key="frame" x="62" y="173" width="290" height="55"/>
-                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwi-cs-4dA">
+                                <rect key="frame" x="62" y="163" width="290" height="55"/>
+                                <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="WKr-r7-97d"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
-                                <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="自分との戦い">
-                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="自分との戦い" image="person" catalog="system">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="bold"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -70,16 +70,17 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Seh-QZ-eXz">
-                                <rect key="frame" x="62" y="238" width="290" height="55"/>
-                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Seh-QZ-eXz">
+                                <rect key="frame" x="62" y="228" width="290" height="55"/>
+                                <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="ORa-BV-BGU"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
-                                <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="コンピュータと対戦">
-                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="コンピュータと対戦" image="desktopcomputer" catalog="system">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium" weight="bold"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -106,7 +107,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kRm-IM-JSq">
-                                <rect key="frame" x="62" y="443" width="290" height="419"/>
+                                <rect key="frame" x="31" y="423" width="352" height="439"/>
                                 <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -124,16 +125,17 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="ST6-4S-YHU"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wC6-m3-LfU">
-                                <rect key="frame" x="62" y="368" width="290" height="55"/>
-                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wC6-m3-LfU">
+                                <rect key="frame" x="62" y="348" width="290" height="55"/>
+                                <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="JgJ-yx-Tuq"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
-                                <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="ゲームを作る">
-                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="ルームを作る" image="plus.square" catalog="system">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="bold"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -163,19 +165,19 @@
                         <color key="backgroundColor" red="0.1710578623" green="0.44211206019999999" blue="0.1721629703" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="kRm-IM-JSq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7On-rN-Djk"/>
-                            <constraint firstItem="Fc3-IS-6xr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="D1J-t7-Wxo"/>
-                            <constraint firstItem="kRm-IM-JSq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="DLg-oc-pxp"/>
+                            <constraint firstItem="Fc3-IS-6xr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="D1J-t7-Wxo"/>
                             <constraint firstItem="nwi-cs-4dA" firstAttribute="top" secondItem="YTZ-Vk-dL1" secondAttribute="bottom" constant="15" id="E0T-XI-SnA"/>
-                            <constraint firstItem="Fc3-IS-6xr" firstAttribute="top" secondItem="Seh-QZ-eXz" secondAttribute="bottom" constant="30" id="EcH-lY-r6z"/>
+                            <constraint firstItem="Fc3-IS-6xr" firstAttribute="top" secondItem="Seh-QZ-eXz" secondAttribute="bottom" constant="20" id="EcH-lY-r6z"/>
                             <constraint firstItem="Seh-QZ-eXz" firstAttribute="top" secondItem="nwi-cs-4dA" secondAttribute="bottom" constant="10" id="FxC-LO-Zf0"/>
+                            <constraint firstItem="kRm-IM-JSq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="G9M-vl-5PG"/>
                             <constraint firstItem="Seh-QZ-eXz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="GuS-z7-rUf"/>
                             <constraint firstItem="wC6-m3-LfU" firstAttribute="top" secondItem="Fc3-IS-6xr" secondAttribute="bottom" constant="15" id="HDJ-2r-oPa"/>
                             <constraint firstItem="wC6-m3-LfU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PFg-nX-1pE"/>
                             <constraint firstItem="kRm-IM-JSq" firstAttribute="top" secondItem="wC6-m3-LfU" secondAttribute="bottom" constant="20" id="Q0L-SZ-DQm"/>
-                            <constraint firstItem="YTZ-Vk-dL1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="k5a-JN-Q4q"/>
+                            <constraint firstItem="YTZ-Vk-dL1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="k5a-JN-Q4q"/>
                             <constraint firstItem="Seh-QZ-eXz" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.7" id="nRz-Ej-23F"/>
-                            <constraint firstItem="YTZ-Vk-dL1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="nz1-9L-eZp"/>
-                            <constraint firstItem="kRm-IM-JSq" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.7" id="o9D-7H-jxO"/>
+                            <constraint firstItem="YTZ-Vk-dL1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="nz1-9L-eZp"/>
+                            <constraint firstItem="kRm-IM-JSq" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.85" id="o9D-7H-jxO"/>
                             <constraint firstItem="wC6-m3-LfU" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.7" id="vdC-oM-L7p"/>
                             <constraint firstItem="nwi-cs-4dA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w8D-6a-BAW"/>
                             <constraint firstItem="nwi-cs-4dA" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.7" id="x8w-FD-Dn0"/>
@@ -213,4 +215,9 @@
             <point key="canvasLocation" x="1402.8985507246377" y="31.473214285714285"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="desktopcomputer" catalog="system" width="128" height="101"/>
+        <image name="person" catalog="system" width="128" height="117"/>
+        <image name="plus.square" catalog="system" width="128" height="114"/>
+    </resources>
 </document>
