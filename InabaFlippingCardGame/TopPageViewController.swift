@@ -30,11 +30,59 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
         
         //other
-//        createNewGameButton.rx.tap.subscribe{ _ in
+        fightWithYourselfButton.rx.tap.subscribe{ _ in
+            self.showAlert()
+        }.disposed(by: dispopseBag)
+        
+        playWithCpuButton.rx.tap.subscribe{ _ in
+            self.showAlert()
+        }.disposed(by: dispopseBag)
+        
+        tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
+            let start = Date()
+            if indexPath.section == 0 {
+                self.showAlert()
+            }else {
+                HUD.show(.progress)
+                for i in 1...30 {
+                    self.db.collection("rooms")
+                        .document("ルーム\(indexPath.row + 101)")
+                        .collection("cardData")
+                        .document("cardData\(i)")
+                        .setData([
+                            "imageName": "ina\(i > 15 ? (i - 15) : (i))",  //←3項演算子
+                            "isOpened": false,
+                            "isMatched": false,
+                            "id": i
+                        ], merge: true) { err in
+                            self.CompOrErr(err: err, i: i, start)
+                    }
+                }
+            }
+            
+//            self.db.collection("test").getDocuments(completion: { (snapshot, err) in
+//                if let snapshot = snapshot {
+//                    print("snapshot: \(snapshot.documents[0]["name"])")
+//                    if snapshot.isEmpty {
+//                        print("snapshotはからです")
+//                    }else {
+//                        print("snapshotはからではない")
+//                    }
+//                }else {
+//                    print("snapshotが存在しない")
+//                }
+//                if let err = err {
+//                    print("err: \(err)")
+//                }else {
+//                    print("errが存在しない")
+//                }
+//            })
+            
+
 //            let start = Date()
 //            HUD.show(.progress)
 //            for i in 1...30 {
-//                self.db.collection("currentGameTableData").document("cardData\(i)").setData([
+//                self.db.collection("ルーム\()").document("cardData\(i)").setData([
 //                    "imageName": "ina\(i > 15 ? (i - 15) : (i))",  //←3項演算子
 //                    "isOpened": false,
 //                    "isMatched": false,
@@ -43,7 +91,8 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
 //                    self.CompOrErr(err: err, i: i, start)
 //                }
 //            }
-//        }.disposed(by: dispopseBag)
+        }).disposed(by: dispopseBag)
+
     }
     
     func CompOrErr(err: Error?, i: Int, _ start: Date) {
@@ -61,6 +110,13 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 }
             }
         }
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(title: "この機能は準備中です", message: "乞うご期待!", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in}
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -98,20 +154,16 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }else {
             switch indexPath.row {
-            case 0:
+            case 9:
+                cell.roomNameLabel.text = "ルーム1\(indexPath.row + 1)"
                 cell.roomStateLabel.text = "参加する"
-                cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
-            case 1:
-                cell.roomStateLabel.text = "観戦する"
-                cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
-            case 5:
-                cell.roomStateLabel.text = "観戦する"
-                cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
+                cell.roomStateLabelBaseView.isHidden = false
             default:
+                cell.roomNameLabel.text = "ルーム10\(indexPath.row + 1)"
                 cell.roomStateLabel.text = "参加する"
                 cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
             }
-            cell.roomNameLabel.text = "ルーム10\(indexPath.row + 1)"
+            cell.roomStateLabelBaseView.isHidden = false
             return cell
         }
     }

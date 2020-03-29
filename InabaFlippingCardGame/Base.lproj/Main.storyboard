@@ -121,7 +121,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kRm-IM-JSq">
-                                <rect key="frame" x="31" y="352" width="352" height="510"/>
+                                <rect key="frame" x="31" y="352" width="352" height="495"/>
                                 <color key="backgroundColor" red="0.93180614709999998" green="0.98104172950000001" blue="0.91120213269999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -148,7 +148,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v8M-zu-Buh" secondAttribute="trailing" constant="50" id="9k0-kn-r0b"/>
                             <constraint firstItem="LPk-kG-tUV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Ch5-PL-kfK"/>
                             <constraint firstItem="Fc3-IS-6xr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="D1J-t7-Wxo"/>
-                            <constraint firstItem="kRm-IM-JSq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ELg-cn-44J"/>
+                            <constraint firstItem="kRm-IM-JSq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-15" id="ELg-cn-44J"/>
                             <constraint firstItem="Fc3-IS-6xr" firstAttribute="top" secondItem="Seh-QZ-eXz" secondAttribute="bottom" constant="20" id="EcH-lY-r6z"/>
                             <constraint firstItem="Seh-QZ-eXz" firstAttribute="top" secondItem="nwi-cs-4dA" secondAttribute="bottom" constant="10" id="FxC-LO-Zf0"/>
                             <constraint firstItem="Seh-QZ-eXz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="GuS-z7-rUf"/>
