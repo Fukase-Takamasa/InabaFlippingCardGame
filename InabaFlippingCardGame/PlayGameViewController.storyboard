@@ -63,7 +63,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="あなたの得点　　　相手の得点" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Yb-w4-mxs">
-                                <rect key="frame" x="0.0" y="629" width="394" height="35"/>
+                                <rect key="frame" x="0.0" y="604" width="394" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="nJH-dF-Vr0"/>
                                 </constraints>
@@ -71,8 +71,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0　　　10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TjF-Aj-6Fq">
-                                <rect key="frame" x="0.0" y="664" width="414" height="70"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0　　　0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TjF-Aj-6Fq">
+                                <rect key="frame" x="0.0" y="639" width="414" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -86,7 +86,7 @@
                             <constraint firstItem="dMt-SW-BVe" firstAttribute="trailing" secondItem="8E4-Yf-Aob" secondAttribute="trailing" constant="15" id="F7M-7x-cdz"/>
                             <constraint firstItem="dMt-SW-BVe" firstAttribute="trailing" secondItem="9Ou-6Q-R1X" secondAttribute="trailing" id="Gwz-vj-ezL"/>
                             <constraint firstItem="dMt-SW-BVe" firstAttribute="trailing" secondItem="8Yb-w4-mxs" secondAttribute="trailing" constant="20" id="IaZ-0b-x7y"/>
-                            <constraint firstItem="8Yb-w4-mxs" firstAttribute="top" secondItem="m6l-rB-1WI" secondAttribute="bottom" constant="40" id="JOJ-lE-Y3G"/>
+                            <constraint firstItem="8Yb-w4-mxs" firstAttribute="top" secondItem="m6l-rB-1WI" secondAttribute="bottom" constant="15" id="JOJ-lE-Y3G"/>
                             <constraint firstItem="8E4-Yf-Aob" firstAttribute="leading" secondItem="p8J-Hi-Kxz" secondAttribute="trailing" constant="30" id="Ncs-9K-WvI"/>
                             <constraint firstItem="9Ou-6Q-R1X" firstAttribute="top" secondItem="8E4-Yf-Aob" secondAttribute="bottom" id="Qu9-pa-AUP"/>
                             <constraint firstItem="dMt-SW-BVe" firstAttribute="bottom" secondItem="TjF-Aj-6Fq" secondAttribute="bottom" constant="40" id="RHD-9y-QOC"/>
@@ -108,7 +108,7 @@
                     <navigationItem key="navigationItem" title="ルーム1" id="Phu-2g-wRT">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="AUA-S7-kDg">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BS2-ao-nmV">
-                                <rect key="frame" x="20" y="7" width="92" height="30"/>
+                                <rect key="frame" x="20" y="6" width="98" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                 <state key="normal" title="ロビーへ戻る">

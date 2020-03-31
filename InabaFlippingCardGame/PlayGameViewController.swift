@@ -34,6 +34,8 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var playerCount = 1
     var lastPlayerCount = 1
     var opponentPlayerName = ""
+    var myScore = 0
+    var opponentScore = 0
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -46,6 +48,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         super.viewDidLoad()
         self.navigationItem.title = "ルーム\(roomNumber)"
         playerJoinedLabel.text = ""
+        scoreCountLabel.text = "\(myScore)　　　\(opponentScore)"
         
         //Rxメソッド
         backButton.rx.tap.subscribe({ _ in
@@ -111,6 +114,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         db.collection("rooms").document("room\(roomNumber)").collection("cardData")
             .order(by: "id")
             .addSnapshotListener({ (snapShot, err) in
+                self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
                 print("snapShot流れた")
                 if let snapShot = snapShot {
                     self.inabaCards = snapShot.documents.map{ data -> CardData in
@@ -218,6 +222,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 //フリップ２回目　２枚がマッチしてるかジャッジ
                 if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
+                    self.myScore += 1
                     self.navigationMessageLabel.text = "マッチしました！！\n続けてあなたのターンです"
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
