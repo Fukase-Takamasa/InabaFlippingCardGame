@@ -33,7 +33,10 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var isMyTurn = false
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var playerJoinedLabel: UILabel!
+    @IBOutlet weak var playerCountLabel: UILabel!
+    @IBOutlet weak var navigationMessageLabel: UILabel!
+    @IBOutlet weak var scoreCountLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +55,11 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                     self.myPlayerNumber = doc.count - 1
                     if self.myPlayerNumber < 2 {
                         print("あなたは先攻です\n他のユーザーの参加を待っています")
-                        self.label.text = "あなたは先攻です\n他のユーザーの参加を待っています"
+                        self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
                         self.collectionView.isUserInteractionEnabled = true
                     }else {
                         print("あなたは後攻です\nゲームが開始されました")
-                        self.label.text = "あなたは後攻です\nゲームが開始されました"
+                        self.navigationMessageLabel.text = "あなたは後攻です\nゲームが開始されました"
                         self.collectionView.isUserInteractionEnabled = false
                     }
                 }else {
@@ -66,19 +69,22 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         
         db.collection("rooms").document("room\(roomNumber)")
             .addSnapshotListener({(snapshot, err) in
-                if let snapshot = snapshot?.data() {
+                guard let snapshot = snapshot?.data() else {
+                    return
+                }
+                
                     self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
                     if self.isMyTurn {
                         self.collectionView.isUserInteractionEnabled = true
-                        print("俺のターン！どろぉう！！！！（自分のターンです）")
-                        self.label.text = "あなたのターンです"
+                        print("あなたのターンです")
+                        self.navigationMessageLabel.text = "あなたのターンです"
                     }else {
                         self.collectionView.isUserInteractionEnabled = false
-                        print("今日はこの辺にしといてやるぜ...（相手のターンになった）")
-                        self.label.text = "相手のターンです"
+                        print("相手のターンです")
+                        self.navigationMessageLabel.text = "相手のターンです"
                         
                     }
-                }
+                
             })
         
         db.collection("rooms").document("room\(roomNumber)").collection("cardData")
@@ -143,7 +149,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 //フリップ２回目　２枚がマッチしてるかジャッジ
                 if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
-                    self.label.text = "マッチしました！！\n続けてあなたのターンです"
+                    self.navigationMessageLabel.text = "マッチしました！！\n続けてあなたのターンです"
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     //マッチした！isOpenedをtrueにする
@@ -162,7 +168,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     self.flippedCard = [0,0]
                 }else {
                     print("マッチしませんでした\nカードを覚えておきましょう♪")
-                    self.label.text = "マッチしませんでした\nカードを覚えておきましょう♪"
+                    self.navigationMessageLabel.text = "マッチしませんでした\nカードを覚えておきましょう♪"
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     collectionView.isUserInteractionEnabled = false
@@ -206,7 +212,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         self.db.collection("rooms")
                             .document("room\(self.roomNumber)")
                             .setData(["currentFlippingPlayer": "player\(self.myPlayerNumber)" == "player1" ? "player2" : "player1"], merge: true)
-                        self.label.text = "相手のターンです"
+                        self.navigationMessageLabel.text = "相手のターンです"
                         collectionView.isUserInteractionEnabled = false
                     }
                 }
