@@ -35,28 +35,23 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var lastPlayerCount = 1
     var opponentPlayerName = ""
     
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var playerJoinedLabel: UILabel!
     @IBOutlet weak var playerCountLabel: UILabel!
     @IBOutlet weak var navigationMessageLabel: UILabel!
     @IBOutlet weak var scoreCountLabel: UILabel!
     
-    override func viewWillDisappear(_ animated: Bool) {
-        print("disappear")
-        db.collection("rooms").document("room\(roomNumber)").updateData(["\(myUUID)": FieldValue.delete(),]){ err in
-            if let err = err {
-                print("削除エラー: \(err)")
-            }else {
-                print("削除完了")
-                self.showDisconnectedAlert()
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "ルーム\(roomNumber)"
         playerJoinedLabel.text = ""
+        
+        //Rxメソッド
+        backButton.rx.tap.subscribe({ _ in
+            self.showConnectionWillDisconnectAlert()
+            }).disposed(by: disposeBag)
+        
 
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         
@@ -154,15 +149,28 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         }
     }
     
-    func showDisconnectedAlert() {
-        let alert = UIAlertController(title: "接続が切断されました", message: "ロビーへ戻ります", preferredStyle: .alert)
+    func showConnectionWillDisconnectAlert() {
+        let alert = UIAlertController(title: "ロビーに戻るとゲームデータは破棄されます。よろしいですか？", message: "キャンセルを押すとゲームを再開します", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
-            self.navigationController?.popViewController(animated: true)
+            HUD.show(.progress)
+            self.db.collection("rooms").document("room\(self.roomNumber)").updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
+                if let err = err {
+                    print("削除エラー: \(err)")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }else {
+                    print("削除完了")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+        let cancel = UIAlertAction(title: "キャンセル", style: .cancel) { (UIAlertAction) in
         }
         alert.addAction(ok)
+        alert.addAction(cancel)
         self.present(alert, animated: true)
     }
-    
 }
 
 extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {

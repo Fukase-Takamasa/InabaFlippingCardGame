@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--InabaFlippingCardGame≪Swift≫-->
+        <!--ルーム1-->
         <scene sceneID="Cyu-7T-bFX">
             <objects>
                 <viewController id="OG9-P0-8cc" customClass="PlayGameViewController" customModule="InabaFlippingCardGame" customModuleProvider="target" sceneMemberID="viewController">
@@ -105,8 +105,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dMt-SW-BVe"/>
                     </view>
-                    <navigationItem key="navigationItem" title="InabaFlippingCardGame≪Swift≫" id="Phu-2g-wRT"/>
+                    <navigationItem key="navigationItem" title="ルーム1" id="Phu-2g-wRT">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="AUA-S7-kDg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BS2-ao-nmV">
+                                <rect key="frame" x="20" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <state key="normal" title="ロビーへ戻る">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="backButton" destination="BS2-ao-nmV" id="DJY-CP-X4N"/>
                         <outlet property="collectionView" destination="m6l-rB-1WI" id="tql-rn-qSQ"/>
                         <outlet property="navigationMessageLabel" destination="9Ou-6Q-R1X" id="qbA-wo-MKx"/>
                         <outlet property="playerCountLabel" destination="8E4-Yf-Aob" id="yDm-jy-N38"/>

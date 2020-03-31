@@ -44,6 +44,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             let start = Date()
             if indexPath.section == 0 {
                 self.showAlert()
+                self.tableView.deselectRow(at: indexPath, animated: true)
             }else {
                 HUD.show(.progress)
                 self.db.collection("rooms")
@@ -63,47 +64,15 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                             "isMatched": false,
                             "id": i
                         ], merge: true) { err in
-                            self.CompOrErr(err: err, i: i, start, row: indexPath.row)
+                            self.CompOrErr(err, i, start, indexPath)
                     }
                 }
             }
-            
-//            self.db.collection("test").getDocuments(completion: { (snapshot, err) in
-//                if let snapshot = snapshot {
-//                    print("snapshot: \(snapshot.documents[0]["name"])")
-//                    if snapshot.isEmpty {
-//                        print("snapshotはからです")
-//                    }else {
-//                        print("snapshotはからではない")
-//                    }
-//                }else {
-//                    print("snapshotが存在しない")
-//                }
-//                if let err = err {
-//                    print("err: \(err)")
-//                }else {
-//                    print("errが存在しない")
-//                }
-//            })
-            
-
-//            let start = Date()
-//            HUD.show(.progress)
-//            for i in 1...30 {
-//                self.db.collection("ルーム\()").document("cardData\(i)").setData([
-//                    "imageName": "ina\(i > 15 ? (i - 15) : (i))",  //←3項演算子
-//                    "isOpened": false,
-//                    "isMatched": false,
-//                    "id": i
-//                ], merge: true) { err in
-//                    self.CompOrErr(err: err, i: i, start)
-//                }
-//            }
         }).disposed(by: dispopseBag)
 
     }
     
-    func CompOrErr(err: Error?, i: Int, _ start: Date, row: Int) {
+    func CompOrErr(_ err: Error?, _ i: Int, _ start: Date, _ indexPath: IndexPath) {
         if let err = err {
             print("index(\(i))errです: \(err)")
         }else {
@@ -114,8 +83,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 print("処理時間: \(elapsedTime)秒")
                 HUD.flash(.success, delay: 1) { (Bool) in
                     let vc = PlayGameViewController.instantiate()
-                    vc.roomNumber = (row + 1)
+                    vc.roomNumber = (indexPath.row + 1)
                     vc.myUUID = self.uuidString
+                    self.tableView.deselectRow(at: indexPath, animated: true)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
@@ -124,7 +94,8 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     func showAlert() {
         let alert = UIAlertController(title: "この機能は準備中です", message: "乞うご期待!", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in}
+        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
+        }
         alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
     }
