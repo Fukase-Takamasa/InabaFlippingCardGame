@@ -20,7 +20,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     var db: Firestore!
     let uuidString = UUID().uuidString
     var thirtyNumbers: [Int] = []
+    var myPlayerName = "名無しさん"
 
+    @IBOutlet weak var playerNameTextField: UITextField!
     @IBOutlet weak var fightWithYourselfButton: UIButton!
     @IBOutlet weak var playWithCpuButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -36,6 +38,15 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
         
         //other
+        playerNameTextField.delegate = self
+        playerNameTextField.rx.controlEvent(.editingChanged).asDriver()
+            .drive(onNext: { _ in
+                self.myPlayerName = self.playerNameTextField.text ?? "名無しさん"
+                if self.playerNameTextField.text == "" {
+                    self.myPlayerName = "名無しさん"
+                }
+            }).disposed(by: dispopseBag)
+        
         fightWithYourselfButton.rx.tap.subscribe{ _ in
             self.showAlert()
         }.disposed(by: dispopseBag)
@@ -58,7 +69,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 self.db.collection("rooms")
                     .document("room\(indexPath.row + 1)")
                     .setData([
-                        "\(self.uuidString)": "田中 太郎",
+                        "\(self.uuidString)": self.myPlayerName,
                         "currentFlippingPlayer": "player1"
                     ], merge: true)
                 for i in 1...30 {
@@ -158,5 +169,16 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+}
+
+extension TopPageViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
 
