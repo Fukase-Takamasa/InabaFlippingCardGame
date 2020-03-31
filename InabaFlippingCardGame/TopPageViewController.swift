@@ -47,13 +47,14 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             }else {
                 HUD.show(.progress)
                 self.db.collection("rooms")
-                    .document("ルーム\(indexPath.row + 101)")
+                    .document("room\(indexPath.row + 1)")
                     .setData([
-                        "\(self.uuidString)": false,
+                        "\(self.uuidString)": "\(self.uuidString)",
+                        "currentFlippingPlayer": "player1"
                     ], merge: true)
                 for i in 1...30 {
                     self.db.collection("rooms")
-                        .document("ルーム\(indexPath.row + 101)")
+                        .document("room\(indexPath.row + 1)")
                         .collection("cardData")
                         .document("cardData\(i)")
                         .setData([
@@ -113,7 +114,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 print("処理時間: \(elapsedTime)秒")
                 HUD.flash(.success, delay: 1) { (Bool) in
                     let vc = PlayGameViewController.instantiate()
-                    vc.roomNumber = (row + 101)
+                    vc.roomNumber = (row + 1)
                     vc.myUUID = self.uuidString
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
