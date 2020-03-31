@@ -31,6 +31,9 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var myUUID = ""
     var myPlayerNumber = 0
     var isMyTurn = false
+    var playerCount = 1
+    var lastPlayerCount = 1
+    var opponentPlayerName = ""
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var playerJoinedLabel: UILabel!
@@ -38,10 +41,23 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     @IBOutlet weak var navigationMessageLabel: UILabel!
     @IBOutlet weak var scoreCountLabel: UILabel!
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print("disappear")
+        db.collection("rooms").document("room\(roomNumber)").updateData(["\(myUUID)": FieldValue.delete(),]){ err in
+            if let err = err {
+                print("削除エラー: \(err)")
+            }else {
+                print("削除完了")
+                self.showDisconnectedAlert()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "ルーム\(roomNumber)"
-        
+        playerJoinedLabel.text = ""
+
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         
         //Firestore
@@ -52,6 +68,8 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             .getDocument { (doc, err) in
                 if let doc = doc?.data() {
                     print("doc.count: \(doc.count - 1)")
+                    self.playerCount = doc.count - 1
+                    self.playerCountLabel.text = "現在の参加人数\n\(doc.count - 1)人"
                     self.myPlayerNumber = doc.count - 1
                     if self.myPlayerNumber < 2 {
                         print("あなたは先攻です\n他のユーザーの参加を待っています")
@@ -69,10 +87,17 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         
         db.collection("rooms").document("room\(roomNumber)")
             .addSnapshotListener({(snapshot, err) in
-                guard let snapshot = snapshot?.data() else {
-                    return
+                guard let snapshot = snapshot?.data() else { return }
+                //プレーヤーの入退室を表示　相手が退室後の先攻後攻の切り替えも行う
+                self.playerCount = snapshot.count - 1
+                if self.lastPlayerCount != self.playerCount {
+                    let bool = self.lastPlayerCount < self.playerCount ? true : false
+                    self.playerJoinedOrLeftTheGame(snapshot: snapshot, joined: bool)
+                    self.lastPlayerCount = self.playerCount
                 }
-                
+                //参加人数の表示と、自分/相手ターンの切り替え
+                self.playerCountLabel.text = "現在の参加人数\n\(snapshot.count - 1)人"
+                if snapshot.count > 2 {
                     self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
                     if self.isMyTurn {
                         self.collectionView.isUserInteractionEnabled = true
@@ -82,9 +107,10 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                         self.collectionView.isUserInteractionEnabled = false
                         print("相手のターンです")
                         self.navigationMessageLabel.text = "相手のターンです"
-                        
                     }
-                
+                }else {
+                    print("参加者が1人のため、他のユーザーの参加を待っています")
+                }
             })
         
         db.collection("rooms").document("room\(roomNumber)").collection("cardData")
@@ -102,6 +128,41 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                 }
             })
     }
+    
+    func playerJoinedOrLeftTheGame(snapshot: [String: Any], joined: Bool) {
+        let otherPlayerData = snapshot.first{ ($0.key != self.myUUID) && ($0.key != "currentFlippingPlayer") }
+        let playerName = otherPlayerData?.value ?? "名前なし"
+        if joined {
+            UIView.animate(withDuration: 1) {
+                self.playerJoinedLabel.text = "\(playerName)が参加しました"
+            }
+            let otherPlayerData = snapshot.first{ ($0.key != self.myUUID) && ($0.key != "currentFlippingPlayer") }
+            opponentPlayerName = (otherPlayerData?.value ?? "名前なし") as! String
+        }else {
+            UIView.animate(withDuration: 1) {
+                self.playerJoinedLabel.text = "\(self.opponentPlayerName)が退室しました"
+            }
+            opponentPlayerName = ""
+            print("あなたは先攻です\n他のユーザーの参加を待っています")
+            self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
+            self.collectionView.isUserInteractionEnabled = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            UIView.animate(withDuration: 1) {
+                self.playerJoinedLabel.text = ""
+            }
+        }
+    }
+    
+    func showDisconnectedAlert() {
+        let alert = UIAlertController(title: "接続が切断されました", message: "ロビーへ戻ります", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(ok)
+        self.present(alert, animated: true)
+    }
+    
 }
 
 extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewDataSource {

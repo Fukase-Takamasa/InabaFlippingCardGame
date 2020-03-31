@@ -49,7 +49,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 self.db.collection("rooms")
                     .document("room\(indexPath.row + 1)")
                     .setData([
-                        "\(self.uuidString)": "\(self.uuidString)",
+                        "\(self.uuidString)": "田中 太郎",
                         "currentFlippingPlayer": "player1"
                     ], merge: true)
                 for i in 1...30 {
