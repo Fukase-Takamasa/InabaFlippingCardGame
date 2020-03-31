@@ -18,6 +18,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     let dispopseBag = DisposeBag()
     var db: Firestore!
+    let uuidString = UUID().uuidString
 
     @IBOutlet weak var fightWithYourselfButton: UIButton!
     @IBOutlet weak var playWithCpuButton: UIButton!
@@ -25,6 +26,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         db = Firestore.firestore()
 
         TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
@@ -44,6 +46,11 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 self.showAlert()
             }else {
                 HUD.show(.progress)
+                self.db.collection("rooms")
+                    .document("ルーム\(indexPath.row + 101)")
+                    .setData([
+                        "\(self.uuidString)": false,
+                    ], merge: true)
                 for i in 1...30 {
                     self.db.collection("rooms")
                         .document("ルーム\(indexPath.row + 101)")
@@ -107,6 +114,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 HUD.flash(.success, delay: 1) { (Bool) in
                     let vc = PlayGameViewController.instantiate()
                     vc.roomNumber = (row + 101)
+                    vc.myUUID = self.uuidString
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }

@@ -40,13 +40,23 @@
                                     <outlet property="delegate" destination="OG9-P0-8cc" id="wVi-gX-cTh"/>
                                 </connections>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="あなたは先攻です" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ou-6Q-R1X">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="185"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.17105786229818262" green="0.44211206020776261" blue="0.17216297034780853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="centerX" secondItem="dMt-SW-BVe" secondAttribute="centerX" id="Bmk-Ca-eZ8"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="centerX" secondItem="FXh-Qj-yo2" secondAttribute="centerX" id="C6e-vu-LWt"/>
+                            <constraint firstItem="9Ou-6Q-R1X" firstAttribute="top" secondItem="dMt-SW-BVe" secondAttribute="top" id="Fxk-bh-mch"/>
+                            <constraint firstItem="dMt-SW-BVe" firstAttribute="trailing" secondItem="9Ou-6Q-R1X" secondAttribute="trailing" id="Gwz-vj-ezL"/>
+                            <constraint firstItem="9Ou-6Q-R1X" firstAttribute="leading" secondItem="dMt-SW-BVe" secondAttribute="leading" id="eg1-yh-INU"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="centerY" secondItem="dMt-SW-BVe" secondAttribute="centerY" id="lrG-G4-8j6"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="width" secondItem="FXh-Qj-yo2" secondAttribute="width" multiplier="0.903382" id="qOA-pb-776"/>
+                            <constraint firstItem="m6l-rB-1WI" firstAttribute="top" secondItem="9Ou-6Q-R1X" secondAttribute="bottom" id="tIY-O3-LAD"/>
                             <constraint firstItem="m6l-rB-1WI" firstAttribute="height" secondItem="FXh-Qj-yo2" secondAttribute="height" multiplier="0.5" id="x4Z-t2-fWU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dMt-SW-BVe"/>
@@ -54,6 +64,7 @@
                     <navigationItem key="navigationItem" title="InabaFlippingCardGame≪Swift≫" id="Phu-2g-wRT"/>
                     <connections>
                         <outlet property="collectionView" destination="m6l-rB-1WI" id="tql-rn-qSQ"/>
+                        <outlet property="label" destination="9Ou-6Q-R1X" id="74m-V9-6XF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHp-mV-D5K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

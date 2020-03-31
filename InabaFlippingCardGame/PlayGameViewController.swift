@@ -28,8 +28,12 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var flipCount = 1
     var flippedCard = [0, 0]
     var roomNumber = 0
+    var myUUID = ""
+    var myPlayerNumber = 0
+    var isMyTurn = false
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var label: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +43,41 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         
         //Firestore
         db = Firestore.firestore()
+        
+        db.collection("rooms")
+            .document("ルーム\(roomNumber)")
+            .getDocument { (doc, err) in
+                if let doc = doc?.data() {
+                    print("doc.count: \(doc.count - 1)")
+                    self.myPlayerNumber = doc.count - 1
+                    if self.myPlayerNumber < 2 {
+                        print("あなたは先攻です")
+                        self.label.text = "あなたは先攻です"
+                        self.collectionView.isUserInteractionEnabled = true
+                    }else {
+                        print("あなたは後攻です")
+                        self.label.text = "あなたは後攻です"
+                        self.collectionView.isUserInteractionEnabled = false
+                    }
+                }else {
+                    print("err: \(String(describing: err))")
+                }
+        }
+        
+        db.collection("rooms")
+            .document("ルーム\(roomNumber)")
+            .addSnapshotListener({(snapshot, err) in
+                if let snapshot = snapshot?.data() {
+                    self.isMyTurn = (snapshot["turn"] as! Int) == self.myPlayerNumber ? true : false
+                    if self.isMyTurn {
+                        self.collectionView.isUserInteractionEnabled = true
+                        print("俺のターン！どろぉう！！！！（自分のターンです）")
+                    }else {
+                        self.collectionView.isUserInteractionEnabled = false
+                        print("今日はこの辺にしといてやるか...（相手のターンになった）")
+                    }
+                }
+            })
         
         db.collection("rooms").document("ルーム\(roomNumber)").collection("cardData")
             .order(by: "id")
@@ -106,6 +145,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 //フリップ２回目　２枚がマッチしてるかジャッジ
                 if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
+                    self.label.text = "マッチしました！！\n続けてあなたのターンです"
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     //マッチした！isOpenedをtrueにする
@@ -124,6 +164,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     self.flippedCard = [0,0]
                 }else {
                     print("マッチしなかったorz")
+                    self.label.text = "マッチしませんでした...\nカードを覚えておきましょう♪"
                     print("マッチ結果: \(inabaCards[flippedCard[1]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
                     collectionView.isUserInteractionEnabled = false
@@ -164,7 +205,11 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         }
                         self.flipCount = 1
                         self.flippedCard = [0,0]
-                        collectionView.isUserInteractionEnabled = true
+                        self.db.collection("rooms")
+                            .document("ルーム\(self.roomNumber)")
+                            .setData(["turn": self.myPlayerNumber == 1 ? 2 : 1], merge: true)
+                        print("相手のターンです")
+                        collectionView.isUserInteractionEnabled = false
                     }
                 }
             }
