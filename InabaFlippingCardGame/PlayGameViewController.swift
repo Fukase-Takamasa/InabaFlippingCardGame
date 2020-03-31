@@ -61,6 +61,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         //Firestore
         db = Firestore.firestore()
         
+        //ルームに入った直後に1回だけ自分のプレーヤー番号を取得
         db.collection("rooms")
             .document("room\(roomNumber)")
             .getDocument { (doc, err) in
@@ -83,6 +84,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                 }
         }
         
+        //自分/相手ターンの切り替わりと参加人数の取得、反映
         db.collection("rooms").document("room\(roomNumber)")
             .addSnapshotListener({(snapshot, err) in
                 guard let snapshot = snapshot?.data() else { return }
@@ -111,6 +113,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                 }
             })
         
+        //遷移前にセットしたカードデータを取得、以降カードをめくるごとに通知を受ける
         db.collection("rooms").document("room\(roomNumber)").collection("cardData")
             .order(by: "id")
             .addSnapshotListener({ (snapShot, err) in

@@ -19,6 +19,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     let dispopseBag = DisposeBag()
     var db: Firestore!
     let uuidString = UUID().uuidString
+    var thirtyNumbers: [Int] = []
 
     @IBOutlet weak var fightWithYourselfButton: UIButton!
     @IBOutlet weak var playWithCpuButton: UIButton!
@@ -26,6 +27,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        for i in 1...30 {
+            thirtyNumbers += [i]
+        }
 
         db = Firestore.firestore()
 
@@ -41,11 +45,15 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         }.disposed(by: dispopseBag)
         
         tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
+            print("シャッフル前: \(self.thirtyNumbers)")
             let start = Date()
             if indexPath.section == 0 {
                 self.showAlert()
                 self.tableView.deselectRow(at: indexPath, animated: true)
             }else {
+                //セルタップするごとに1~30の数字をシャッフル
+                self.thirtyNumbers.shuffle()
+                print("シャッフル後: \(self.thirtyNumbers)")
                 HUD.show(.progress)
                 self.db.collection("rooms")
                     .document("room\(indexPath.row + 1)")
@@ -54,15 +62,16 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                         "currentFlippingPlayer": "player1"
                     ], merge: true)
                 for i in 1...30 {
+                    let random = self.thirtyNumbers[i - 1]
                     self.db.collection("rooms")
                         .document("room\(indexPath.row + 1)")
                         .collection("cardData")
-                        .document("cardData\(i)")
+                        .document("cardData\(random)")
                         .setData([
                             "imageName": "ina\(i > 15 ? (i - 15) : (i))",  //←3項演算子
                             "isOpened": false,
                             "isMatched": false,
-                            "id": i
+                            "id": random
                         ], merge: true) { err in
                             self.CompOrErr(err, i, start, indexPath)
                     }
