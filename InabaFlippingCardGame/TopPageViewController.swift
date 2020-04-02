@@ -48,7 +48,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             }).disposed(by: dispopseBag)
         
         fightWithYourselfButton.rx.tap.subscribe{ _ in
-            self.showAlert()
+            let vc = PlayGameViewController.instantiate()
+            vc.gameType = .fightWithYourself
+            self.navigationController?.pushViewController(vc, animated: true)
         }.disposed(by: dispopseBag)
         
         playWithCpuButton.rx.tap.subscribe{ _ in
@@ -105,6 +107,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                     let vc = PlayGameViewController.instantiate()
                     vc.roomNumber = (indexPath.row + 1)
                     vc.myUUID = self.uuidString
+                    vc.gameType = .fireStoreOnline
                     self.tableView.deselectRow(at: indexPath, animated: true)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
