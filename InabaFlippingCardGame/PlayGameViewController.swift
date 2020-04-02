@@ -16,6 +16,12 @@ import Firebase
 
 class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     
+    enum GameType {
+        case fightWithYourself
+        case playWithCpu
+        case fireStoreOnline
+    }
+    
     struct CardData {
         var imageName: String
         var isOpened: Bool
@@ -23,6 +29,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     }
     
     let disposeBag = DisposeBag()
+    var gameType: GameType?
     var db: Firestore!
     var inabaCards: [CardData] = []
     var flipCount = 1
@@ -46,89 +53,96 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "ルーム\(roomNumber)"
-        playerJoinedLabel.text = ""
-        scoreCountLabel.text = "\(myScore)　　　\(opponentScore)"
-        
+        CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         //Rxメソッド
         backButton.rx.tap.subscribe({ _ in
             self.showConnectionWillDisconnectAlert()
-            }).disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
         
-
-        CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
-        
-        //Firestore
-        db = Firestore.firestore()
-        
-        //ルームに入った直後に1回だけ自分のプレーヤー番号を取得
-        db.collection("rooms")
-            .document("room\(roomNumber)")
-            .getDocument { (doc, err) in
-                if let doc = doc?.data() {
-                    print("doc.count: \(doc.count - 1)")
-                    self.playerCount = doc.count - 1
-                    self.playerCountLabel.text = "現在の参加人数\n\(doc.count - 1)人"
-                    self.myPlayerNumber = doc.count - 1
-                    if self.myPlayerNumber < 2 {
-                        print("あなたは先攻です\n他のユーザーの参加を待っています")
-                        self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
-                        self.collectionView.isUserInteractionEnabled = true
+        //ゲームタイプによって処理を分岐
+        switch gameType {
+        case .fightWithYourself:
+            self.navigationItem.title = "自分との戦い部屋"
+            
+        case .playWithCpu:
+            self.navigationItem.title = "CPUと戦う部屋"
+            
+        case .fireStoreOnline:
+            self.navigationItem.title = "ルーム\(roomNumber)"
+            playerJoinedLabel.text = ""
+            scoreCountLabel.text = "\(myScore)　　　\(opponentScore)"
+            //Firestore
+            db = Firestore.firestore()
+            //ルームに入った直後に1回だけ自分のプレーヤー番号を取得
+            db.collection("rooms")
+                .document("room\(roomNumber)")
+                .getDocument { (doc, err) in
+                    if let doc = doc?.data() {
+                        print("doc.count: \(doc.count - 1)")
+                        self.playerCount = doc.count - 1
+                        self.playerCountLabel.text = "現在の参加人数\n\(doc.count - 1)人"
+                        self.myPlayerNumber = doc.count - 1
+                        if self.myPlayerNumber < 2 {
+                            print("あなたは先攻です\n他のユーザーの参加を待っています")
+                            self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
+                            self.collectionView.isUserInteractionEnabled = true
+                        }else {
+                            print("あなたは後攻です\nゲームが開始されました")
+                            self.navigationMessageLabel.text = "あなたは後攻です\nゲームが開始されました"
+                            self.collectionView.isUserInteractionEnabled = false
+                        }
                     }else {
-                        print("あなたは後攻です\nゲームが開始されました")
-                        self.navigationMessageLabel.text = "あなたは後攻です\nゲームが開始されました"
-                        self.collectionView.isUserInteractionEnabled = false
+                        print("err: \(String(describing: err))")
                     }
-                }else {
-                    print("err: \(String(describing: err))")
-                }
+            }
+            //自分/相手ターンの切り替わりと参加人数の取得、反映
+            db.collection("rooms").document("room\(roomNumber)")
+                .addSnapshotListener({(snapshot, err) in
+                    guard let snapshot = snapshot?.data() else { return }
+                    //プレーヤーの入退室を表示　相手が退室後の先攻後攻の切り替えも行う
+                    self.playerCount = snapshot.count - 1
+                    if self.lastPlayerCount != self.playerCount {
+                        let bool = self.lastPlayerCount < self.playerCount ? true : false
+                        self.playerJoinedOrLeftTheGame(snapshot: snapshot, joined: bool)
+                        self.lastPlayerCount = self.playerCount
+                    }
+                    //参加人数の表示と、自分/相手ターンの切り替え
+                    self.playerCountLabel.text = "現在の参加人数\n\(snapshot.count - 1)人"
+                    if snapshot.count > 2 {
+                        self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
+                        if self.isMyTurn {
+                            self.collectionView.isUserInteractionEnabled = true
+                            print("あなたのターンです")
+                            self.navigationMessageLabel.text = "あなたのターンです"
+                        }else {
+                            self.collectionView.isUserInteractionEnabled = false
+                            print("相手のターンです")
+                            self.navigationMessageLabel.text = "相手のターンです"
+                        }
+                    }else {
+                        print("参加者が1人のため、他のユーザーの参加を待っています")
+                    }
+                })
+            //遷移前にセットしたカードデータを取得、以降カードをめくるごとに通知を受ける
+            db.collection("rooms").document("room\(roomNumber)").collection("cardData")
+                .order(by: "id")
+                .addSnapshotListener({ (snapShot, err) in
+                    self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
+                    print("snapShot流れた")
+                    if let snapShot = snapShot {
+                        self.inabaCards = snapShot.documents.map{ data -> CardData in
+                            let data = data.data()
+                            return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
+                        }
+                        self.collectionView.reloadData()
+                    }else {
+                        print("Error: \(String(describing: err))")
+                    }
+                })
+            
+        case .none:
+            break
         }
-        
-        //自分/相手ターンの切り替わりと参加人数の取得、反映
-        db.collection("rooms").document("room\(roomNumber)")
-            .addSnapshotListener({(snapshot, err) in
-                guard let snapshot = snapshot?.data() else { return }
-                //プレーヤーの入退室を表示　相手が退室後の先攻後攻の切り替えも行う
-                self.playerCount = snapshot.count - 1
-                if self.lastPlayerCount != self.playerCount {
-                    let bool = self.lastPlayerCount < self.playerCount ? true : false
-                    self.playerJoinedOrLeftTheGame(snapshot: snapshot, joined: bool)
-                    self.lastPlayerCount = self.playerCount
-                }
-                //参加人数の表示と、自分/相手ターンの切り替え
-                self.playerCountLabel.text = "現在の参加人数\n\(snapshot.count - 1)人"
-                if snapshot.count > 2 {
-                    self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
-                    if self.isMyTurn {
-                        self.collectionView.isUserInteractionEnabled = true
-                        print("あなたのターンです")
-                        self.navigationMessageLabel.text = "あなたのターンです"
-                    }else {
-                        self.collectionView.isUserInteractionEnabled = false
-                        print("相手のターンです")
-                        self.navigationMessageLabel.text = "相手のターンです"
-                    }
-                }else {
-                    print("参加者が1人のため、他のユーザーの参加を待っています")
-                }
-            })
-        
-        //遷移前にセットしたカードデータを取得、以降カードをめくるごとに通知を受ける
-        db.collection("rooms").document("room\(roomNumber)").collection("cardData")
-            .order(by: "id")
-            .addSnapshotListener({ (snapShot, err) in
-                self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
-                print("snapShot流れた")
-                if let snapShot = snapShot {
-                    self.inabaCards = snapShot.documents.map{ data -> CardData in
-                        let data = data.data()
-                        return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
-                    }
-                    self.collectionView.reloadData()
-                }else {
-                    print("Error: \(String(describing: err))")
-                }
-            })
     }
     
     func playerJoinedOrLeftTheGame(snapshot: [String: Any], joined: Bool) {
