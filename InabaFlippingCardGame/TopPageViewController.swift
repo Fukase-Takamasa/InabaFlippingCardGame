@@ -16,8 +16,15 @@ import Firebase
 
 class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
+    struct Rooms {
+        var roomName: String
+        var playerCount: Int
+    }
+    
     let dispopseBag = DisposeBag()
     var db: Firestore!
+    
+    var rooms: [Rooms] = []
     var start = Date()
     let uuidString = UUID().uuidString
     var thirtyNumbers: [Int] = []
@@ -33,38 +40,28 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         for i in 1...30 {
             thirtyNumbers += [i]
         }
+        
+        TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
 
         db = Firestore.firestore()
 
-        TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
+        db.collection("rooms").addSnapshotListener{ snapshot, err in
+            guard let snapshot = snapshot else {
+                print("snapshotListener Error: \(String(describing: err))")
+                return
+            }
+            self.rooms = snapshot.documents.map { data -> Rooms in
+                return Rooms(roomName: data.documentID, playerCount: data.data().count - 1)
+            }
+            self.tableView.reloadData()
+//            HUD.show(.progress)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+//                HUD.hide()
+//            }
+        }
         
-        //other
-        playerNameTextField.delegate = self
-        playerNameTextField.rx.controlEvent(.editingChanged).asDriver()
-            .drive(onNext: { _ in
-                self.myPlayerName = self.playerNameTextField.text ?? "名無しさん"
-                if self.playerNameTextField.text == "" {
-                    self.myPlayerName = "名無しさん"
-                }
-            }).disposed(by: dispopseBag)
-        playerNameTextField.rx.controlEvent(.editingDidEnd).asDriver()
-            .drive(onNext: {
-                if self.playerNameTextField.text == "" {
-                    self.playerNameTextField.text = "ニックネーム未設定"
-                    self.myPlayerName = "名無しさん"
-                }
-            }).disposed(by: dispopseBag)
         
-        fightWithYourselfButton.rx.tap.subscribe{ _ in
-            let vc = PlayGameViewController.instantiate()
-            vc.gameType = .fightWithYourself
-            self.navigationController?.pushViewController(vc, animated: true)
-        }.disposed(by: dispopseBag)
-        
-        playWithCpuButton.rx.tap.subscribe{ _ in
-            self.comingSoonAlert()
-        }.disposed(by: dispopseBag)
-        
+        //Rxメソッド
         tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
             HUD.show(.progress)
             //処理時間を計測するため、tableViewタップ時に処理開始時間を更新
@@ -109,6 +106,32 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 }
             }
         }).disposed(by: dispopseBag)
+        
+        playerNameTextField.delegate = self
+        playerNameTextField.rx.controlEvent(.editingChanged).asDriver()
+            .drive(onNext: { _ in
+                self.myPlayerName = self.playerNameTextField.text ?? "名無しさん"
+                if self.playerNameTextField.text == "" {
+                    self.myPlayerName = "名無しさん"
+                }
+            }).disposed(by: dispopseBag)
+        playerNameTextField.rx.controlEvent(.editingDidEnd).asDriver()
+            .drive(onNext: {
+                if self.playerNameTextField.text == "" {
+                    self.playerNameTextField.text = "ニックネーム未設定"
+                    self.myPlayerName = "名無しさん"
+                }
+            }).disposed(by: dispopseBag)
+        
+        fightWithYourselfButton.rx.tap.subscribe{ _ in
+            let vc = PlayGameViewController.instantiate()
+            vc.gameType = .fightWithYourself
+            self.navigationController?.pushViewController(vc, animated: true)
+        }.disposed(by: dispopseBag)
+        
+        playWithCpuButton.rx.tap.subscribe{ _ in
+            self.comingSoonAlert()
+        }.disposed(by: dispopseBag)
     }
     
     func setCardData(indexPath: IndexPath) {
@@ -206,7 +229,7 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 1
         }else {
-            return 3
+            return rooms.count
         }
     }
     
@@ -215,26 +238,25 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section
+        let row = indexPath.row
         let cell = TableViewUtil.createCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier, indexPath) as! TopPageRoomListCell
-        if indexPath.section == 0 {
+        if section == 0 {
             cell.roomNameLabel.text = " ＋ 今すぐ作成"
             cell.playerCountLabel.text = ""
             cell.roomStateLabelBaseView.isHidden = true
             return cell
         }else {
-            switch indexPath.row {
-            case 1:
-                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)"
-                cell.playerCountLabel.text = "2/2人"
-                cell.roomStateLabel.text = "満室"
-                cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
-            default:
-                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)"
-                cell.playerCountLabel.text = "0/2人"
+            cell.roomStateLabelBaseView.isHidden = false
+            cell.roomNameLabel.text = rooms[row].roomName
+            cell.playerCountLabel.text = "\(rooms[row].playerCount)/2人"
+            if rooms[row].playerCount < 2 {
                 cell.roomStateLabel.text = "参加する"
                 cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
+            }else {
+                cell.roomStateLabel.text = "満室"
+                cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
             }
-            cell.roomStateLabelBaseView.isHidden = false
             
             //デフォの区切り線を使いつつ、セルが無いところはフッターで埋めて区切り線を見えなくする
             tableView.tableFooterView = UIView()
