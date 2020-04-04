@@ -218,20 +218,26 @@ extension TopPageViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = TableViewUtil.createCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier, indexPath) as! TopPageRoomListCell
         if indexPath.section == 0 {
             cell.roomNameLabel.text = " ＋ 今すぐ作成"
+            cell.playerCountLabel.text = ""
             cell.roomStateLabelBaseView.isHidden = true
             return cell
         }else {
             switch indexPath.row {
             case 1:
-                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)　　2/2人"
+                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)"
+                cell.playerCountLabel.text = "2/2人"
                 cell.roomStateLabel.text = "満室"
                 cell.roomStateLabelBaseView.backgroundColor = UIColor.systemOrange
             default:
-                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)　　0/2人"
+                cell.roomNameLabel.text = "ルーム\(indexPath.row + 1)"
+                cell.playerCountLabel.text = "0/2人"
                 cell.roomStateLabel.text = "参加する"
                 cell.roomStateLabelBaseView.backgroundColor = UIColor.systemTeal
             }
             cell.roomStateLabelBaseView.isHidden = false
+            
+            //デフォの区切り線を使いつつ、セルが無いところはフッターで埋めて区切り線を見えなくする
+            tableView.tableFooterView = UIView()
             return cell
         }
     }

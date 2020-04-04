@@ -17,6 +17,7 @@ class TopPageRoomListCell: UITableViewCell, Reusable {
     var disposeBag = DisposeBag()
     
     @IBOutlet weak var roomNameLabel: UILabel!
+    @IBOutlet weak var playerCountLabel: UILabel!
     @IBOutlet weak var roomStateLabelBaseView: UIView!
     @IBOutlet weak var roomStateLabel: UILabel!
     
