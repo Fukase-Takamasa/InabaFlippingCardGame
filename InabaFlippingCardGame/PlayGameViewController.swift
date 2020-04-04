@@ -92,13 +92,16 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                             self.collectionView.isUserInteractionEnabled = false
                         }
                     }else {
-                        print("err: \(String(describing: err))")
+                        print("getDocument Error: \(String(describing: err))")
                     }
             }
             //自分/相手ターンの切り替わりと参加人数の取得、反映
             db.collection("rooms").document("room\(roomNumber)")
                 .addSnapshotListener({(snapshot, err) in
-                    guard let snapshot = snapshot?.data() else { return }
+                    guard let snapshot = snapshot?.data() else {
+                        print("room\(self.roomNumber) PlayerData snapShotListener Error: \(String(describing: err))")
+                        return
+                    }
                     //プレーヤーの入退室を表示　相手が退室後の先攻後攻の切り替えも行う
                     self.playerCount = snapshot.count - 1
                     if self.lastPlayerCount != self.playerCount {
@@ -136,7 +139,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                         }
                         self.collectionView.reloadData()
                     }else {
-                        print("Error: \(String(describing: err))")
+                        print("room\(self.roomNumber) CardData snapShotListener Error: \(String(describing: err))")
                     }
                 })
             
