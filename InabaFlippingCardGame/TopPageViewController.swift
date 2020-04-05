@@ -63,12 +63,12 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         
         //RxメソッドとFirestore
         tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
+            let row = indexPath.row
             HUD.show(.progress)
             //処理時間を計測するため、tableViewタップ時に処理開始時間を更新
             self.start = Date()
             if indexPath.section == 0 {
-                self.showAlert(type: .comingSoon)
-                self.tableView.deselectRow(at: indexPath, animated: true)
+                self.showAlert(type: .newRoomName)
             }else {
                 self.db.collection("rooms").document("\(self.rooms[indexPath.row].roomName)").getDocument { (docListSnapshot, err) in
                     guard let docList = docListSnapshot?.data() else {
@@ -85,20 +85,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                         self.showAlert(type: .full)
                     }else {
                         print("ルームに入室可能です\n接続を開始します。")
-                        self.db.collection("rooms")
-                            .document("\(self.rooms[indexPath.row].roomName)")
-                            .setData([
-                                "roomName": "",
-                                "defaultRoom": true,
-                                "currentFlippingPlayer": "player1",
-                                "\(self.uuidString)": self.playerNameTextField.text == "" ? "名無しさん" : self.playerNameTextField.text ?? "名無しさん",
-                            ], merge: true) { err in
-                                if docList.count == 1 {
-                                    self.setCardData(indexPath: indexPath)
-                                }else {
-                                    self.goToGamePage(indexPath: indexPath)
-                                }
-                        }
+                        self.connectToExistingRoom(self.rooms[row].documentID, self.rooms[row].roomName, docList.count - 3)
                     }
                 }
             }
@@ -115,10 +102,39 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         }.disposed(by: dispopseBag)
     }
     
-    func setCardData(indexPath: IndexPath) {
+    func createNewRoom(_ documentID: String, _ roomName: String) {
+        self.db.collection("rooms")
+            .document(documentID)
+            .setData([
+                "roomName": roomName,
+                "defaultRoom": false,
+                "currentFlippingPlayer": "player1",
+                "\(self.uuidString)": self.playerNameTextField.text == "" ? "名無しさん" : self.playerNameTextField.text ?? "名無しさん",
+            ], merge: true) { err in
+                //Firestoreのデータ構造作り替えるまで、仮で乱数のdocumentIDにUUIDを代用（ルーム名を被った値をユーザーが入力する可能性があるため）
+                self.setCardData(documentID, roomName)
+        }
+    }
+    
+    func connectToExistingRoom(_ documentID: String, _ roomName: String, _ playerCount: Int) {
+        self.db.collection("rooms")
+            .document(documentID)
+            .setData([
+                "currentFlippingPlayer": "player1",
+                "\(self.uuidString)": self.playerNameTextField.text == "" ? "名無しさん" : self.playerNameTextField.text ?? "名無しさん",
+            ], merge: true) { err in
+                if playerCount < 1 {
+                    self.setCardData(documentID, roomName)
+                }else {
+                    self.goToGamePage(documentID, roomName)
+                }
+        }
+    }
+    
+    func setCardData(_ documentID: String, _ roomName: String) {
         for (i, random) in (1...30).shuffled().enumerated() {
             self.db.collection("rooms")
-                .document("\(rooms[indexPath.row].roomName)")
+                .document("\(documentID)")
                 .collection("cardData")
                 .document("cardData\(i + 1)")
                 .setData([
@@ -131,31 +147,32 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                     if let err = err {
                         print("setCardData Error: \(String(describing: err))")
                     }else {
-                        self.setCardsCompOrErr(i + 1, indexPath, err)
+                        self.setCardsCompOrErr(documentID, roomName, i + 1, err)
                     }
             }
         }
     }
     
-    func setCardsCompOrErr( _ i: Int, _ indexPath: IndexPath, _ err: Error?) {
+    func setCardsCompOrErr(_ documentID: String, _ roomName: String , _ i: Int, _ err: Error?) {
         if let err = err {
             print("index(\(i)) setCardDataErr: \(err)")
         }else {
             print("setData Succesful (\(i))")
             if i == 30 {
                 print("30 Cards data set completed!")
-                self.goToGamePage(indexPath: indexPath)
+                self.goToGamePage(documentID, roomName)
             }
         }
     }
     
-    func goToGamePage(indexPath: IndexPath) {
+    //documentIDを引数にしている理由　ルーム新規作成時は作成者のUUIDを代用してるが、既存ルームのIDはsnapshotから取得するため、両パターンに備えて引数にしている
+    func goToGamePage(_ documentID: String, _ roomName: String) {
         HUD.flash(.success, delay: 1) { (Bool) in
             let vc = PlayGameViewController.instantiate()
-            vc.roomNumber = (indexPath.row + 1)
+            vc.roomDocumentID = documentID
+            vc.roomName = roomName
             vc.myUUID = self.uuidString
             vc.gameType = .fireStoreOnline
-            self.tableView.deselectRow(at: indexPath, animated: true)
             print("処理時間: \(Date().timeIntervalSince(self.start - 1))秒")
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -182,13 +199,15 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             var alertTextField = UITextField()
             alert.addTextField { (UITextField) in
                 UITextField.placeholder = "ルーム名を入力"
-                alertTextField = UITextField
-            }
+                alertTextField = UITextField }
             let create = UIAlertAction(title: "作成", style: .default) { (UIAlertAction) in
                 print(alertTextField.text!)
+                guard let roomName = alertTextField.text else {
+                    print("alertTextField.textがnil"); return }
+                //ここで入力値を拾ってdb通信
+                self.createNewRoom("\(self.uuidString)Room", roomName)
             }
             let cancel = UIAlertAction(title: "キャンセル", style: .cancel) { (UIAlertAction) in }
-            
             alert.addAction(create)
             alert.addAction(cancel)
         case .none:
