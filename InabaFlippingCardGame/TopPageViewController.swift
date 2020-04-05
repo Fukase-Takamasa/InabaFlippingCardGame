@@ -30,7 +30,7 @@ enum AlertType {
 class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     let dispopseBag = DisposeBag()
-    let uuidString = UUID().uuidString
+    var uuidString = UUID().uuidString
     var db: Firestore!
     var alertType: AlertType?
     var rooms: [Rooms] = []
@@ -56,7 +56,11 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 print("snapshotListener Error: \(String(describing: err))"); return
             }
             self.rooms = snapshot.documents.map { data -> Rooms in
-                return Rooms(documentID: data.documentID, roomName: data.data()["roomName"] as! String, playerCount: data.data().count - 3)
+                guard let roomName = data.data()["roomName"] else {
+                    print("roomNameアンラップ失敗")
+                    return Rooms(documentID: "nil", roomName: "nil", playerCount: 0)
+                }
+                return Rooms(documentID: data.documentID, roomName: roomName as! String, playerCount: data.data().count - 3)
             }
             self.tableView.reloadData()
         }
@@ -64,13 +68,15 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         //RxメソッドとFirestore
         tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
             let row = indexPath.row
+            //セルタップするごとに新しい値を生成
+            self.uuidString = UUID().uuidString
             HUD.show(.progress)
             //処理時間を計測するため、tableViewタップ時に処理開始時間を更新
             self.start = Date()
             if indexPath.section == 0 {
                 self.showAlert(type: .newRoomName)
             }else {
-                self.db.collection("rooms").document("\(self.rooms[indexPath.row].roomName)").getDocument { (docListSnapshot, err) in
+                self.db.collection("rooms").document(self.rooms[row].documentID).getDocument { (docListSnapshot, err) in
                     guard let docList = docListSnapshot?.data() else {
                         if let err = err {
                             print("getDocument Error: \(String(describing: err))")
@@ -78,9 +84,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                         self.showAlert(type: .error)
                         return
                     }
-                    print("docList取得成功 データ数: \(docList.count)")
+                    print("docList取得成功 データ数: \(docList.count - 3)")
                     print("docList中身: \(docList)")
-                    if docList.count > 2 {
+                    if (docList.count - 3) > 2 {
                         print("ルームが満室です。")
                         self.showAlert(type: .full)
                     }else {
