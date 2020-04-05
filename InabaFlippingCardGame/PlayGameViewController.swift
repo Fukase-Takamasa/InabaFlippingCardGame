@@ -122,6 +122,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                             self.navigationMessageLabel.text = "相手のターンです"
                         }
                     }else {
+                        self.myPlayerNumber = 1
                         print("参加者が1人のため、他のユーザーの参加を待っています")
                     }
                 })
@@ -154,7 +155,11 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         let newOpponentPlayerName = opponentPlayerData?.value as? String ?? "名無しさん"
         if joined {
             UIView.animate(withDuration: 1) {
-                self.playerJoinedLabel.text = "\(newOpponentPlayerName)が参加しました"
+                if self.myPlayerNumber <= 2{
+                    self.playerJoinedLabel.text = "\(newOpponentPlayerName)が参加しました"
+                }else {
+                    self.playerJoinedLabel.text = "\(newOpponentPlayerName)のゲームに参加しました"
+                }
             }
         }else {
             UIView.animate(withDuration: 1) {
