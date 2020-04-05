@@ -47,11 +47,11 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         playerNameTextField.delegate = self
         //placeHolderテキストの色を深緑の背景でも見やすいように　少し明るい色に変更
         playerNameTextField.attributedPlaceholder = NSAttributedString(string: "ニックネーム未設定", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightText])
-        playerNameTextField.tintColor = .red
+        playerNameTextField.tintColor = .systemOrange
 
         db = Firestore.firestore()
         //ロビーに表示するオンラインルーム一覧情報の自動更新を設定
-        db.collection("rooms").addSnapshotListener{ snapshot, err in
+        db.collection("rooms").order(by: "defaultRoom").addSnapshotListener{ snapshot, err in
             guard let snapshot = snapshot else {
                 print("snapshotListener Error: \(String(describing: err))"); return
             }
