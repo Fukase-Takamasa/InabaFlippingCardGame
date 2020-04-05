@@ -14,18 +14,18 @@ import InstantiateStandard
 import PKHUD
 import Firebase
 
+struct Rooms {
+    var roomName: String
+    var playerCount: Int
+}
+
+enum AlertType {
+    case error
+    case full
+    case comingSoon
+}
+
 class TopPageViewController: UIViewController, StoryboardInstantiatable {
-    
-    struct Rooms {
-        var roomName: String
-        var playerCount: Int
-    }
-    
-    enum AlertType {
-        case error
-        case full
-        case comingSoon
-    }
     
     let dispopseBag = DisposeBag()
     let uuidString = UUID().uuidString
@@ -33,7 +33,6 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     var alertType: AlertType?
     var rooms: [Rooms] = []
     var start = Date()
-    var myPlayerName = "名無しさん"
 
     @IBOutlet weak var playerNameTextField: UITextField!
     @IBOutlet weak var fightWithYourselfButton: UIButton!
@@ -43,6 +42,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         TableViewUtil.registerCell(tableView, identifier: TopPageRoomListCell.reusableIdentifier)
+        playerNameTextField.delegate = self
+        //placeHolderテキストの色を深緑の背景でも見やすいように　少し明るい色に変更
+        playerNameTextField.attributedPlaceholder = NSAttributedString(string: "ニックネーム未設定", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightText])
 
         db = Firestore.firestore()
         //ロビーに表示するオンラインルーム一覧情報の自動更新を設定
@@ -56,7 +58,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             self.tableView.reloadData()
         }
         
-        //Rxメソッド
+        //RxメソッドとFirestore
         tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
             HUD.show(.progress)
             //処理時間を計測するため、tableViewタップ時に処理開始時間を更新
@@ -83,7 +85,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                         self.db.collection("rooms")
                             .document("room\(indexPath.row + 1)")
                             .setData([
-                                "\(self.uuidString)": self.myPlayerName,
+                                "\(self.uuidString)": self.playerNameTextField.text == "" ? "名無しさん" : self.playerNameTextField.text ?? "名無しさん",
                                 "currentFlippingPlayer": "player1"
                             ], merge: true) { err in
                                 if docList.count == 1 {
@@ -93,26 +95,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                                 }
                         }
                     }
-                    
                 }
             }
         }).disposed(by: dispopseBag)
-        
-        playerNameTextField.delegate = self
-        playerNameTextField.rx.controlEvent(.editingChanged).asDriver()
-            .drive(onNext: { _ in
-                self.myPlayerName = self.playerNameTextField.text ?? "名無しさん"
-                if self.playerNameTextField.text == "" {
-                    self.myPlayerName = "名無しさん"
-                }
-            }).disposed(by: dispopseBag)
-        playerNameTextField.rx.controlEvent(.editingDidEnd).asDriver()
-            .drive(onNext: {
-                if self.playerNameTextField.text == "" {
-                    self.playerNameTextField.text = "ニックネーム未設定"
-                    self.myPlayerName = "名無しさん"
-                }
-            }).disposed(by: dispopseBag)
         
         fightWithYourselfButton.rx.tap.subscribe{ _ in
             let vc = PlayGameViewController.instantiate()
@@ -149,7 +134,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     func setCardsCompOrErr( _ i: Int, _ indexPath: IndexPath, _ err: Error?) {
         if let err = err {
-            print("index(\(i)) setCardDataErrです: \(err)")
+            print("index(\(i)) setCardDataErr: \(err)")
         }else {
             print("setData Succesful (\(i))")
             if i == 30 {
@@ -173,6 +158,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     
     func showAlert(type: AlertType?) {
         HUD.hide()
+        alertType = type
         var alert: UIAlertController!
         switch alertType {
             //後で余裕があれば、他のルームに自動で接続し直しますか？を作る　それでも他の部屋が満室なら自動で新しい部屋を作成し、新しい部屋を作成しました　のアラートを出す

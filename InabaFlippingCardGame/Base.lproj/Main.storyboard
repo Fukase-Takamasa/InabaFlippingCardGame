@@ -152,7 +152,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MQf-X3-gBJ" userLabel="SpacerView">
                                 <rect key="frame" x="0.0" y="830.5" width="414" height="31.5"/>
                             </view>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ニックネーム未設定" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rPf-j7-7Ad">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ニックネーム未設定" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rPf-j7-7Ad">
                                 <rect key="frame" x="241" y="103" width="153" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="1Dk-Zl-WUg"/>
@@ -162,7 +162,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMu-W8-3ac" userLabel="TextFieldUnderLineView">
-                                <rect key="frame" x="241" y="123" width="153" height="1"/>
+                                <rect key="frame" x="237" y="123" width="161" height="1"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="ov2-It-S84"/>
@@ -188,7 +188,7 @@
                             <constraint firstItem="Fc3-IS-6xr" firstAttribute="top" secondItem="tsx-uc-TfF" secondAttribute="bottom" id="SOs-eb-YzD"/>
                             <constraint firstItem="sMu-W8-3ac" firstAttribute="centerX" secondItem="rPf-j7-7Ad" secondAttribute="centerX" id="Tld-1b-VTq"/>
                             <constraint firstItem="MQf-X3-gBJ" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.035" id="ZWI-Q6-rCw"/>
-                            <constraint firstItem="sMu-W8-3ac" firstAttribute="width" secondItem="rPf-j7-7Ad" secondAttribute="width" id="a1E-6h-7gQ"/>
+                            <constraint firstItem="sMu-W8-3ac" firstAttribute="width" secondItem="rPf-j7-7Ad" secondAttribute="width" multiplier="1.05" id="a1E-6h-7gQ"/>
                             <constraint firstItem="tsx-uc-TfF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bfG-Za-68Z"/>
                             <constraint firstItem="YTZ-Vk-dL1" firstAttribute="top" secondItem="OGj-TT-mNQ" secondAttribute="bottom" id="cQI-1a-Npg"/>
                             <constraint firstItem="tsx-uc-TfF" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="g1K-GR-Qhe"/>
