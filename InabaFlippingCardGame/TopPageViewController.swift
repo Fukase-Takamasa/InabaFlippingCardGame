@@ -207,10 +207,10 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 UITextField.placeholder = "ルーム名を入力"
                 alertTextField = UITextField }
             let create = UIAlertAction(title: "作成", style: .default) { (UIAlertAction) in
-                print(alertTextField.text!)
                 guard let roomName = alertTextField.text else {
                     print("alertTextField.textがnil"); return }
                 //ここで入力値を拾ってdb通信
+                HUD.show(.progress)
                 self.createNewRoom("\(self.uuidString)Room", roomName)
             }
             let cancel = UIAlertAction(title: "キャンセル", style: .cancel) { (UIAlertAction) in }
