@@ -34,7 +34,8 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var inabaCards: [CardData] = []
     var flipCount = 1
     var flippedCard = [0, 0]
-    var roomNumber = 0
+    var roomDocumentID = ""
+    var roomName = ""
     var myUUID = ""
     var myPlayerNumber = 0
     var isMyTurn = false
@@ -64,9 +65,9 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             self.navigationItem.title = "CPUと戦う部屋"
             createRandomCardsForLocalPlayMode()
         case .fireStoreOnline:
-            self.navigationItem.title = "ルーム\(roomNumber)"
+            self.navigationItem.title = roomName
             playerJoinedLabel.text = ""
-            scoreCountLabel.text = "\(myScore)　　　\(opponentScore)"
+//            scoreCountLabel.text = "\(myScore)　　　\(opponentScore)"
             //Firestore
             db = Firestore.firestore()
             //Rxメソッド
@@ -75,13 +76,13 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             }).disposed(by: disposeBag)
             //ルームに入った直後に1回だけ自分のプレーヤー番号を取得
             db.collection("rooms")
-                .document("room\(roomNumber)")
+                .document(roomDocumentID)
                 .getDocument { (doc, err) in
                     if let doc = doc?.data() {
-                        print("doc.count: \(doc.count - 1)")
-                        self.playerCount = doc.count - 1
-                        self.playerCountLabel.text = "現在の参加人数\n\(doc.count - 1)人"
-                        self.myPlayerNumber = doc.count - 1
+                        print("doc.count: \(doc.count - 3)")
+                        self.playerCount = doc.count - 3
+                        self.playerCountLabel.text = "現在の参加人数\n\(doc.count - 3)人"
+                        self.myPlayerNumber = doc.count - 3
                         if self.myPlayerNumber < 2 {
                             print("あなたは先攻です\n他のユーザーの参加を待っています")
                             self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
@@ -96,22 +97,22 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                     }
             }
             //自分/相手ターンの切り替わりと参加人数の取得、反映
-            db.collection("rooms").document("room\(roomNumber)")
+            db.collection("rooms").document(roomDocumentID)
                 .addSnapshotListener({(snapshot, err) in
                     guard let snapshot = snapshot?.data() else {
-                        print("room\(self.roomNumber) PlayerData snapShotListener Error: \(String(describing: err))")
+                        print("PlayerData snapShotListener Error: \(String(describing: err))")
                         return
                     }
                     //プレーヤーの入退室を表示　相手が退室後の先攻後攻の切り替えも行う
-                    self.playerCount = snapshot.count - 1
+                    self.playerCount = snapshot.count - 3
                     if self.lastPlayerCount != self.playerCount {
                         let bool = self.lastPlayerCount < self.playerCount ? true : false
                         self.playerJoinedOrLeftTheGame(snapshot: snapshot, joined: bool)
                         self.lastPlayerCount = self.playerCount
                     }
                     //参加人数の表示と、自分/相手ターンの切り替え
-                    self.playerCountLabel.text = "現在の参加人数\n\(snapshot.count - 1)人"
-                    if snapshot.count > 2 {
+                    self.playerCountLabel.text = "現在の参加人数\n\(snapshot.count - 3)人"
+                    if (snapshot.count - 3) == 2 {
                         self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
                         if self.isMyTurn {
                             self.collectionView.isUserInteractionEnabled = true
@@ -127,10 +128,10 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                     }
                 })
             //遷移前にセットしたカードデータを取得、以降カードをめくるごとに通知を受ける
-            db.collection("rooms").document("room\(roomNumber)").collection("cardData")
+            db.collection("rooms").document(roomDocumentID).collection("cardData")
                 .order(by: "id")
                 .addSnapshotListener({ (snapShot, err) in
-                    self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
+//                    self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
                     print("snapShot流れた")
                     if let snapShot = snapShot {
                         self.inabaCards = snapShot.documents.map{ data -> CardData in
@@ -139,7 +140,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                         }
                         self.collectionView.reloadData()
                     }else {
-                        print("room\(self.roomNumber) CardData snapShotListener Error: \(String(describing: err))")
+                        print("CardData snapShotListener Error: \(String(describing: err))")
                     }
                 })
             
@@ -177,7 +178,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         let alert = UIAlertController(title: "ロビーに戻るとゲームデータは破棄されます。よろしいですか？", message: "キャンセルを押すとゲームを再開します", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
             HUD.show(.progress)
-            self.db.collection("rooms").document("room\(self.roomNumber)").updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
+            self.db.collection("rooms").document(self.roomDocumentID).updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
                 if let err = err {
                     print("削除エラー: \(err)")
                     HUD.hide()
@@ -274,7 +275,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                     print("flipCount: \(self.flipCount)")
                     flipCount += 1
                     flippedCard[0] = indexPath.row
-                    db.collection("rooms").document("room\(roomNumber)").collection("cardData").document("cardData\(flippedCard[0] + 1)").setData([
+                    db.collection("rooms").document(roomDocumentID).collection("cardData").document("cardData\(flippedCard[0] + 1)").setData([
                             "isOpened": true
                         ], merge: true) { err in
                         print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrueにした")
@@ -295,7 +296,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                         print("flippedCard: \(flippedCard)")
                         //マッチした！両方のカードのisOpened / isMatchedをtrueにする
-                        db.collection("rooms").document("room\(roomNumber)").collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
+                        db.collection("rooms").document(roomDocumentID).collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
                             "isOpened": true,
                             "isMatched": true
                         ], merge: true) { err in
@@ -316,7 +317,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         collectionView.isUserInteractionEnabled = false
                         //ここで一旦　isOpened: trueだけ送信する
                         print("ここで一旦　isOpened: trueだけ送信する")
-                        db.collection("rooms").document("room\(roomNumber)").collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
+                        db.collection("rooms").document(roomDocumentID).collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
                             "isOpened": true,
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
@@ -329,7 +330,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                             print("遅延処理内のflippedCard: \(self.flippedCard)")
                             //マッチしてないので、2秒後に両方閉じる
-                            self.db.collection("rooms").document("room\(self.roomNumber)").collection("cardData").document("cardData\(self.flippedCard[0] + 1)").setData([
+                            self.db.collection("rooms").document(self.roomDocumentID).collection("cardData").document("cardData\(self.flippedCard[0] + 1)").setData([
                                 "isOpened": false,
                             ], merge: true) { err in
                                 print("indexPath.row: \(self.flippedCard[0])のisOpenedをtrue, isMatchedをtrueにした")
@@ -339,7 +340,7 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                                     print("setData Succesful")
                                 }
                             }
-                            self.db.collection("rooms").document("room\(self.roomNumber)").collection("cardData").document("cardData\(self.flippedCard[1] + 1)").setData([
+                            self.db.collection("rooms").document(self.roomDocumentID).collection("cardData").document("cardData\(self.flippedCard[1] + 1)").setData([
                                 "isOpened": false,
                             ], merge: true) { err in
                                 print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
@@ -351,9 +352,8 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                             }
                             self.flipCount = 1
                             self.flippedCard = [0,0]
-                            self.db.collection("rooms")
-                                .document("room\(self.roomNumber)")
-                                .setData(["currentFlippingPlayer": "player\(self.myPlayerNumber)" == "player1" ? "player2" : "player1"], merge: true)
+                            self.db.collection("rooms").document(self.roomDocumentID).setData([
+                                "currentFlippingPlayer": "player\(self.myPlayerNumber)" == "player1" ? "player2" : "player1"], merge: true)
                             self.navigationMessageLabel.text = "相手のターンです"
                             collectionView.isUserInteractionEnabled = false
                         }
