@@ -21,9 +21,10 @@ struct Rooms {
 }
 
 enum AlertType {
-    case error
     case full
+    case error
     case comingSoon
+    case newRoomName
 }
 
 class TopPageViewController: UIViewController, StoryboardInstantiatable {
@@ -46,6 +47,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         playerNameTextField.delegate = self
         //placeHolderテキストの色を深緑の背景でも見やすいように　少し明るい色に変更
         playerNameTextField.attributedPlaceholder = NSAttributedString(string: "ニックネーム未設定", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightText])
+        playerNameTextField.tintColor = .red
 
         db = Firestore.firestore()
         //ロビーに表示するオンラインルーム一覧情報の自動更新を設定
@@ -163,19 +165,35 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         HUD.hide()
         alertType = type
         var alert: UIAlertController!
+        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in }
         switch alertType {
             //後で余裕があれば、他のルームに自動で接続し直しますか？を作る　それでも他の部屋が満室なら自動で新しい部屋を作成し、新しい部屋を作成しました　のアラートを出す
         case .full:
             alert = UIAlertController(title: "このルームは満室です", message: "ルームを変更するか「＋今すぐ作成」\nをお試しください", preferredStyle: .alert)
+            alert.addAction(ok)
         case .error:
             alert = UIAlertController(title: "接続に失敗しました", message: "通信状況を確認するか、時間を空けてまたお試しください", preferredStyle: .alert)
+            alert.addAction(ok)
         case .comingSoon:
             alert = UIAlertController(title: "この機能は準備中です", message: "乞うご期待!", preferredStyle: .alert)
+            alert.addAction(ok)
+        case .newRoomName:
+            alert = UIAlertController(title: "ルーム名を入力", message: "好きなルーム名を入力してください", preferredStyle: .alert)
+            var alertTextField = UITextField()
+            alert.addTextField { (UITextField) in
+                UITextField.placeholder = "ルーム名を入力"
+                alertTextField = UITextField
+            }
+            let create = UIAlertAction(title: "作成", style: .default) { (UIAlertAction) in
+                print(alertTextField.text!)
+            }
+            let cancel = UIAlertAction(title: "キャンセル", style: .cancel) { (UIAlertAction) in }
+            
+            alert.addAction(create)
+            alert.addAction(cancel)
         case .none:
             break
         }
-        let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in }
-        alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
     }
     
