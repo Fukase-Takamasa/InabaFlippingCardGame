@@ -15,6 +15,7 @@ import PKHUD
 import Firebase
 
 struct Rooms {
+    var documentID: String
     var roomName: String
     var playerCount: Int
 }
@@ -53,7 +54,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 print("snapshotListener Error: \(String(describing: err))"); return
             }
             self.rooms = snapshot.documents.map { data -> Rooms in
-                return Rooms(roomName: data.documentID, playerCount: data.data().count - 1)
+                return Rooms(documentID: data.documentID, roomName: data.data()["roomName"] as! String, playerCount: data.data().count - 3)
             }
             self.tableView.reloadData()
         }
@@ -67,7 +68,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                 self.showAlert(type: .comingSoon)
                 self.tableView.deselectRow(at: indexPath, animated: true)
             }else {
-                self.db.collection("rooms").document("room\(indexPath.row + 1)").getDocument { (docListSnapshot, err) in
+                self.db.collection("rooms").document("\(self.rooms[indexPath.row].roomName)").getDocument { (docListSnapshot, err) in
                     guard let docList = docListSnapshot?.data() else {
                         if let err = err {
                             print("getDocument Error: \(String(describing: err))")
@@ -83,10 +84,12 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                     }else {
                         print("ルームに入室可能です\n接続を開始します。")
                         self.db.collection("rooms")
-                            .document("room\(indexPath.row + 1)")
+                            .document("\(self.rooms[indexPath.row].roomName)")
                             .setData([
+                                "roomName": "",
+                                "defaultRoom": true,
+                                "currentFlippingPlayer": "player1",
                                 "\(self.uuidString)": self.playerNameTextField.text == "" ? "名無しさん" : self.playerNameTextField.text ?? "名無しさん",
-                                "currentFlippingPlayer": "player1"
                             ], merge: true) { err in
                                 if docList.count == 1 {
                                     self.setCardData(indexPath: indexPath)
@@ -113,7 +116,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
     func setCardData(indexPath: IndexPath) {
         for (i, random) in (1...30).shuffled().enumerated() {
             self.db.collection("rooms")
-                .document("room\(indexPath.row + 1)")
+                .document("\(rooms[indexPath.row].roomName)")
                 .collection("cardData")
                 .document("cardData\(i + 1)")
                 .setData([
