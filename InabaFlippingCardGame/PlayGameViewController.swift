@@ -41,7 +41,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var isMyTurn = false
     var playerCount = 1
     var lastPlayerCount = 1
-    var opponentPlayerName = ""
+    var opponentPlayerName: Any = ""
     var myScore = 0
     var opponentScore = 0
     
@@ -151,7 +151,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         let opponentPlayerData = snapshot.first{
             ($0.key != self.myUUID) && ($0.key != "currentFlippingPlayer") && ($0.key != "defaultRoom") && ($0.key != "roomName")
         }
-        let newOpponentPlayerName = opponentPlayerData?.value ?? "名前なし"
+        let newOpponentPlayerName = opponentPlayerData?.value as? String ?? "名無しさん"
         if joined {
             UIView.animate(withDuration: 1) {
                 self.playerJoinedLabel.text = "\(newOpponentPlayerName)が参加しました"
@@ -165,37 +165,13 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
             self.collectionView.isUserInteractionEnabled = false
         }
+        self.opponentPlayerName = newOpponentPlayerName
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             UIView.animate(withDuration: 1) {
                 self.playerJoinedLabel.text = ""
             }
         }
     }
-    
-//    func playerJoinedOrLeftTheGame(snapshot: [String: Any], joined: Bool) {
-//        let otherPlayerData = snapshot.first{ ($0.key != self.myUUID) && ($0.key != "currentFlippingPlayer") }
-//        let playerName = otherPlayerData?.value ?? "名前なし"
-//        if joined {
-//            UIView.animate(withDuration: 1) {
-//                self.playerJoinedLabel.text = "\(playerName)が参加しました"
-//            }
-//            let otherPlayerData = snapshot.first{ ($0.key != self.myUUID) && ($0.key != "currentFlippingPlayer") }
-//            opponentPlayerName = (otherPlayerData?.value ?? "名前なし") as! String
-//        }else {
-//            UIView.animate(withDuration: 1) {
-//                self.playerJoinedLabel.text = "\(self.opponentPlayerName)が退室しました"
-//            }
-//            opponentPlayerName = ""
-//            print("あなたは先攻です\n他のユーザーの参加を待っています")
-//            self.navigationMessageLabel.text = "あなたは先攻です\n他のユーザーの参加を待っています"
-//            self.collectionView.isUserInteractionEnabled = true
-//        }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            UIView.animate(withDuration: 1) {
-//                self.playerJoinedLabel.text = ""
-//            }
-//        }
-//    }
     
     func showConnectionWillDisconnectAlert() {
         let alert = UIAlertController(title: "ロビーに戻るとゲームデータは破棄されます。よろしいですか？", message: "キャンセルを押すとゲームを再開します", preferredStyle: .alert)
