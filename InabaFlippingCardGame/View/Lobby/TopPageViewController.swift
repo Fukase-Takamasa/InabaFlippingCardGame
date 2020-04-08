@@ -98,8 +98,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         }).disposed(by: dispopseBag)
         
         fightWithYourselfButton.rx.tap.subscribe{ _ in
-            let vc = PlayGameViewController.instantiate()
-            vc.gameType = .fightWithYourself
+            let vc = PlayGameFightWithYourselfViewController.instantiate()
             self.navigationController?.pushViewController(vc, animated: true)
         }.disposed(by: dispopseBag)
         
@@ -178,7 +177,6 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
             vc.roomDocumentID = documentID
             vc.roomName = roomName
             vc.myUUID = self.uuidString
-            vc.gameType = .fireStoreOnline
             print("処理時間: \(Date().timeIntervalSince(self.start - 1))秒")
             self.navigationController?.pushViewController(vc, animated: true)
         }
