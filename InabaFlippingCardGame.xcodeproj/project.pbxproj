@@ -125,6 +125,68 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		59148B97243E2AE0008D703E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		59148B98243E2AEB008D703E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				59148B99243E2B05008D703E /* Lobby */,
+				59148B9A243E2B21008D703E /* Game */,
+				6784A80F241404D4004ED752 /* CardCell.swift */,
+				6784A810241404D4004ED752 /* CardCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		59148B99243E2B05008D703E /* Lobby */ = {
+			isa = PBXGroup;
+			children = (
+				6784A7DF2413E882004ED752 /* TopPageViewController.swift */,
+				6784A7E12413E882004ED752 /* Main.storyboard */,
+				59FD33642430853D00EB7555 /* TopPageRoomListCell.swift */,
+				59FD33652430853D00EB7555 /* TopPageRoomListCell.xib */,
+			);
+			path = Lobby;
+			sourceTree = "<group>";
+		};
+		59148B9A243E2B21008D703E /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				59148B9B243E2B42008D703E /* FightWithYourself */,
+				59148B9C243E2B5D008D703E /* PlayWithCPU */,
+				59148B9D243E2B68008D703E /* FirestoreOnline */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		59148B9B243E2B42008D703E /* FightWithYourself */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FightWithYourself;
+			sourceTree = "<group>";
+		};
+		59148B9C243E2B5D008D703E /* PlayWithCPU */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PlayWithCPU;
+			sourceTree = "<group>";
+		};
+		59148B9D243E2B68008D703E /* FirestoreOnline */ = {
+			isa = PBXGroup;
+			children = (
+				6784A80B2413ED4C004ED752 /* PlayGameViewController.swift */,
+				6784A80D2413ED5E004ED752 /* PlayGameViewController.storyboard */,
+			);
+			path = FirestoreOnline;
+			sourceTree = "<group>";
+		};
 		6784A7CF2413E882004ED752 = {
 			isa = PBXGroup;
 			children = (
@@ -154,14 +216,8 @@
 				6784A7DD2413E882004ED752 /* SceneDelegate.swift */,
 				6784A81824147F64004ED752 /* Extension */,
 				6784A813241406D1004ED752 /* Utility */,
-				6784A7DF2413E882004ED752 /* TopPageViewController.swift */,
-				6784A7E12413E882004ED752 /* Main.storyboard */,
-				59FD33642430853D00EB7555 /* TopPageRoomListCell.swift */,
-				59FD33652430853D00EB7555 /* TopPageRoomListCell.xib */,
-				6784A80B2413ED4C004ED752 /* PlayGameViewController.swift */,
-				6784A80D2413ED5E004ED752 /* PlayGameViewController.storyboard */,
-				6784A80F241404D4004ED752 /* CardCell.swift */,
-				6784A810241404D4004ED752 /* CardCell.xib */,
+				59148B97243E2AE0008D703E /* Model */,
+				59148B98243E2AEB008D703E /* View */,
 				6784A7E42413E884004ED752 /* Assets.xcassets */,
 				6784A7E62413E884004ED752 /* LaunchScreen.storyboard */,
 				6784A7E92413E884004ED752 /* Info.plist */,

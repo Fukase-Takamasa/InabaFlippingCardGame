@@ -130,12 +130,23 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
             db.collection("rooms").document(roomDocumentID).collection("cardData")
                 .order(by: "id")
                 .addSnapshotListener({ (snapShot, err) in
-//                    self.scoreCountLabel.text = "\(self.myScore)　　　\(self.opponentScore)"
+                    var player1Score = 0
+                    var player2Score = 0
                     print("snapShot流れた")
                     if let snapShot = snapShot {
                         self.inabaCards = snapShot.documents.map{ data -> CardData in
                             let data = data.data()
+                            if data["correctedPlayer"] as? String ?? "" == "player1" {
+                                player1Score += 1
+                            }else if data["correctedPlayer"] as? String ?? "" == "player2" {
+                                player2Score += 1
+                            }
                             return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool)
+                        }
+                        if self.myPlayerNumber == 1 {
+                            self.scoreCountLabel.text = "\(player1Score / 2)　　　\(player2Score / 2)"
+                        }else {
+                            self.scoreCountLabel.text = "\(player2Score / 2)　　　\(player1Score / 2)"
                         }
                         self.collectionView.reloadData()
                     }else {
@@ -302,7 +313,8 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                         //マッチした！両方のカードのisOpened / isMatchedをtrueにする
                         db.collection("rooms").document(roomDocumentID).collection("cardData").document("cardData\(flippedCard[1] + 1)").setData([
                             "isOpened": true,
-                            "isMatched": true
+                            "isMatched": true,
+                            "correctedPlayer": "player\(myPlayerNumber)"
                         ], merge: true) { err in
                             print("indexPath.row: \(self.flippedCard[1])のisOpenedをtrue, isMatchedをtrueにした")
                             if let err = err {
