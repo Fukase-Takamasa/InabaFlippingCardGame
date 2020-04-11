@@ -99,7 +99,9 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
         
         fightWithYourselfButton.rx.tap.subscribe{ _ in
             let vc = PlayGameFightWithYourselfViewController.instantiate()
+//            vc.modalPresentationStyle = .fullScreen
             self.navigationController?.pushViewController(vc, animated: true)
+//            self.present(vc, animated: true)
         }.disposed(by: dispopseBag)
         
         playWithCpuButton.rx.tap.subscribe{ _ in
