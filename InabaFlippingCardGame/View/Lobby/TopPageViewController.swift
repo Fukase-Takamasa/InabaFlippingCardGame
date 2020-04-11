@@ -86,7 +86,7 @@ class TopPageViewController: UIViewController, StoryboardInstantiatable {
                     }
                     print("docList取得成功 データ数: \(docList.count - 3)")
                     print("docList中身: \(docList)")
-                    if (docList.count - 3) > 2 {
+                    if (docList.count - 3) > 1 {
                         print("ルームが満室です。")
                         self.showAlert(type: .full)
                     }else {
