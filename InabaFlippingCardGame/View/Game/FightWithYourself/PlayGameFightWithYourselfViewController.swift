@@ -24,7 +24,7 @@ class PlayGameFightWithYourselfViewController: UIViewController, StoryboardInsta
     var inabaCards: [CardData] = []
     var flipCount = 1
     var flippedCard = [0, 0]
-    var turnCount = 99
+    var turnCount = 50
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var turnCountLabel: UILabel!
