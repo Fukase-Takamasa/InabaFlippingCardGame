@@ -36,8 +36,8 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     var playerCount = 1
     var lastPlayerCount = 1
     var opponentPlayerName: Any = ""
-    var myScore = 0
-    var opponentScore = 0
+    var isDefaultRoom = false
+    
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -75,6 +75,9 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                         print("あなたは後攻です\nゲームが開始されました")
                         self.navigationMessageLabel.text = "あなたは後攻です\nゲームが開始されました"
                     }
+                    //デフォルトルームかどうか取得
+                    self.isDefaultRoom = doc["defaultRoom"] as! Bool
+                    print("isDefaultRoom: \(self.isDefaultRoom)")
                 }else {
                     print("getDocument Error: \(String(describing: err))")
                 }
@@ -95,7 +98,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                 }
                 self.lastPlayerCount = self.playerCount
                 //参加人数の表示と、自分/相手ターンの切り替え
-                self.playerCountLabel.text = "\n\(snapshot.count - 3)人"
+                self.playerCountLabel.text = "\(snapshot.count - 3)人"
                 if (snapshot.count - 3) == 2 {
                     self.isMyTurn = (snapshot["currentFlippingPlayer"] as! String) == ("player\(self.myPlayerNumber)") ? true : false
                     if self.isMyTurn {
@@ -139,10 +142,8 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         if joined {
             if self.myPlayerNumber == 1{
                 self.playerJoinedLabel.text = "\(newOpponentPlayerName)が参加しました"
-//                self.playerJoinedLabel.text = "\(newOpponentPlayerName)のゲームに参加しました"
             }else if self.myPlayerNumber == 2 {
                 self.playerJoinedLabel.text = "\(newOpponentPlayerName)のゲームに参加しました"
-//                self.playerJoinedLabel.text = "\(newOpponentPlayerName)が参加しました"
             }
         }else {
             self.playerJoinedLabel.text = "\(self.opponentPlayerName)が退室しました"
@@ -167,15 +168,31 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
             self.playerJoinedLabel.isHidden = true
             HUD.show(.progress)
-            self.db.collection("rooms").document(self.roomDocumentID).updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
-                if let err = err {
-                    print("削除エラー: \(err)")
-                    HUD.hide()
-                    self.navigationController?.popViewController(animated: true)
-                }else {
-                    print("削除完了")
-                    HUD.hide()
-                    self.navigationController?.popViewController(animated: true)
+            //自分が最後且つ、デフォルームでは無い時は　ルームのdocumentごと削除
+            if self.playerCount < 2 && !self.isDefaultRoom {
+                self.db.collection("rooms").document(self.roomDocumentID).delete() { err in
+                    if let err = err {
+                        print("ドキュメント削除エラー: \(err)")
+                        HUD.hide()
+                        self.navigationController?.popViewController(animated: true)
+                    }else {
+                        print("ドキュメント削除完了")
+                        HUD.hide()
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            //それ以外は　DBのドキュメントから自分の名前のフィールドだけを削除
+            }else {
+                self.db.collection("rooms").document(self.roomDocumentID).updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
+                    if let err = err {
+                        print("フィールド削除エラー: \(err)")
+                        HUD.hide()
+                        self.navigationController?.popViewController(animated: true)
+                    }else {
+                        print("フィールド削除完了")
+                        HUD.hide()
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
@@ -243,7 +260,6 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 //フリップ２回目　２枚がマッチしてるかジャッジ
                 if (inabaCards[flippedCard[0]].imageName) == (inabaCards[flippedCard[1]].imageName) {
                     print("マッチした！")
-                    self.myScore += 1
                     self.navigationMessageLabel.text = "マッチしました！！\n続けてあなたのターンです"
                     print("マッチ結果: \(inabaCards[flippedCard[0]]), \(inabaCards[flippedCard[1]])")
                     print("flippedCard: \(flippedCard)")
