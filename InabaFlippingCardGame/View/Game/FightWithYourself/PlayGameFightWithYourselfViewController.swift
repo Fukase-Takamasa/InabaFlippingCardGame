@@ -35,7 +35,7 @@ class PlayGameFightWithYourselfViewController: UIViewController, StoryboardInsta
         CollectionViewUtil.registerCell(collectionView, identifier: CardCell.reusableIdentifier)
         turnCountLabel.text = String(turnCount)
         createRandomCardsForLocalPlayMode()
-        
+        printCheatSheet()
         //Rxメソッド
         backButton.rx.tap.subscribe({ _ in
             self.navigationController?.popViewController(animated: true)
@@ -46,6 +46,46 @@ class PlayGameFightWithYourselfViewController: UIViewController, StoryboardInsta
         for i in (1...30).shuffled() {
             inabaCards += [CardData(imageName: "ina\(i > 15 ? i - 15 : i)", isOpened: false, isMatched: false)]
         }
+    }
+    
+    func checkClearOrFailed() {
+        let check = inabaCards.filter({ $0.isMatched == false })
+        if check.isEmpty {
+            stageClearAlert()
+        }
+        if turnCount <= 0 {
+            faildAlert()
+        }
+    }
+    
+    func stageClearAlert() {
+        let alert = UIAlertController(title: "クリア\nおめでとうルトラそぉあ”あ”あ”", message: "また遊んでください^^！", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "ヘイッッッ！！", style: .default) { (UIAlertAction) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(ok)
+        self.present(alert, animated: true)
+    }
+    
+    func faildAlert() {
+        let alert = UIAlertController(title: "残念でした！！！", message: "また遊んでください^^！", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "ヘイッッッ！！", style: .default) { (UIAlertAction) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(ok)
+        self.present(alert, animated: true)
+    }
+    
+    func printCheatSheet() {
+        var answers: [String] = []
+        for card in inabaCards {
+            answers += [card.imageName]
+        }
+        print("チートシート: \(answers[0..<6])")
+        print("チートシート: \(answers[6..<12])")
+        print("チートシート: \(answers[12..<18])")
+        print("チートシート: \(answers[18..<24])")
+        print("チートシート: \(answers[24..<30])")
     }
     
 }
@@ -112,6 +152,8 @@ extension PlayGameFightWithYourselfViewController: UICollectionViewDelegate, UIC
                         collectionView.reloadData()
                     }
                 }
+                //クリアしたか、それとも0ターンになってしまったかどうかチェックし、それぞれアラートを表示
+                checkClearOrFailed()
             }
         }
         collectionView.reloadData()

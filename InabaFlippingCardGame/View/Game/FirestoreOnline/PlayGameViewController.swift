@@ -125,12 +125,26 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
                         let data = data.data()
                         return CardData(imageName: data["imageName"] as! String, isOpened: data["isOpened"] as! Bool, isMatched: data["isMatched"] as! Bool, correctedPlayer: data["correctedPlayer"] as! String)
                     }
+                    //スコアのアップデートしつつ、もしゲーム終了なら結果をアラートで表示
                     self.updateScoreCount()
                     self.collectionView.reloadData()
                 }else {
                     print("CardData snapShotListener Error: \(String(describing: err))")
                 }
             })
+        
+    }
+    
+    func printCheatSheet() {
+        var answers: [String] = []
+        for card in inabaCards {
+            answers += [card.imageName]
+        }
+        print("チートシート: \(answers[0..<6])")
+        print("チートシート: \(answers[6..<12])")
+        print("チートシート: \(answers[12..<18])")
+        print("チートシート: \(answers[18..<24])")
+        print("チートシート: \(answers[24..<30])")
     }
     
     func playerJoinedOrLeftTheGame(snapshot: [String: Any], joined: Bool) {
@@ -166,35 +180,7 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
     func showConnectionWillDisconnectAlert() {
         let alert = UIAlertController(title: "ロビーに戻るとゲームデータは破棄されます。よろしいですか？", message: "キャンセルを押すとゲームを再開します", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (UIAlertAction) in
-            self.playerJoinedLabel.isHidden = true
-            HUD.show(.progress)
-            //自分が最後且つ、デフォルームでは無い時は　ルームのdocumentごと削除
-            if self.playerCount < 2 && !self.isDefaultRoom {
-                self.db.collection("rooms").document(self.roomDocumentID).delete() { err in
-                    if let err = err {
-                        print("ドキュメント削除エラー: \(err)")
-                        HUD.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }else {
-                        print("ドキュメント削除完了")
-                        HUD.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                }
-            //それ以外は　DBのドキュメントから自分の名前のフィールドだけを削除
-            }else {
-                self.db.collection("rooms").document(self.roomDocumentID).updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
-                    if let err = err {
-                        print("フィールド削除エラー: \(err)")
-                        HUD.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }else {
-                        print("フィールド削除完了")
-                        HUD.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                }
-            }
+            self.leftTheGame()
         }
         let cancel = UIAlertAction(title: "キャンセル", style: .cancel) { (UIAlertAction) in
         }
@@ -203,11 +189,61 @@ class PlayGameViewController: UIViewController, StoryboardInstantiatable {
         self.present(alert, animated: true)
     }
     
+    func leftTheGame() {
+        self.playerJoinedLabel.isHidden = true
+        HUD.show(.progress)
+        //自分が最後且つ、デフォルームでは無い時は　ルームのdocumentごと削除
+        if self.playerCount < 2 && !self.isDefaultRoom {
+            self.db.collection("rooms").document(self.roomDocumentID).delete() { err in
+                if let err = err {
+                    print("ドキュメント削除エラー: \(err)")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }else {
+                    print("ドキュメント削除完了")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        //それ以外は　DBのドキュメントから自分の名前のフィールドだけを削除
+        }else {
+            self.db.collection("rooms").document(self.roomDocumentID).updateData(["\(self.myUUID)": FieldValue.delete(),]){ err in
+                if let err = err {
+                    print("フィールド削除エラー: \(err)")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }else {
+                    print("フィールド削除完了")
+                    HUD.hide()
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+    }
+    
     func updateScoreCount() {
         let myScore = inabaCards.filter({ $0.correctedPlayer == "player\(myPlayerNumber)"})
         let unFlipped = inabaCards.filter({ $0.correctedPlayer == ""})
         let opponentScore = 30 - (myScore.count + unFlipped.count)
         scoreCountLabel.text = "\(myScore.count / 2) 　　　\(opponentScore / 2)"
+        self.checkFinished(myScore.count, opponentScore)
+    }
+    
+    func checkFinished(_ myScore: Int, _ opponentScore: Int) {
+        let check = inabaCards.filter({ $0.isMatched == false })
+        if check.isEmpty {
+            let result = (myScore > opponentScore) ? "君の勝ち！！！" : "残念でした！！！"
+            resultAlert(result)
+        }
+    }
+    
+    func resultAlert(_ result: String) {
+        let alert = UIAlertController(title: result, message: "また遊んでください^^！", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "ヘイッッッ！！", style: .default) { (UIAlertAction) in
+            self.leftTheGame()
+        }
+        alert.addAction(ok)
+        self.present(alert, animated: true)
     }
     
 }
@@ -232,7 +268,9 @@ extension PlayGameViewController: UICollectionViewDelegate, UICollectionViewData
                 cell.imageView.image = UIImage(named: "CardBackImageBlue")
             }
         }
-        
+        if indexPath.row == 29 {
+            printCheatSheet()
+        }
         return cell
     }
     
